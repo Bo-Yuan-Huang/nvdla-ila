@@ -1,0 +1,75 @@
+S_STATUS
+0x6000
+Idle status of two register groups
+S_POINTER
+0x6004
+Pointer for CSB master and data path to access groups
+D_OP_ENABLE
+0x6008
+Set it to 1 to kick off operation for current register group
+D_MISC_CFG
+0x600c
+Configuration of operation: convolution mode, precision, weight reuse, data reuse.
+D_DATAIN_FORMAT
+0x6010
+Input data format and pixel format
+D_DATAIN_SIZE_EXT_0
+0x6014
+Input cube’s width and height after extension
+D_DATAIN_SIZE_EXT_1
+0x6018
+Input cube’s channel after extension
+D_BATCH_NUMBER
+0x601c
+Number of batches
+D_POST_Y_EXTENSION
+0x6020
+Post extension parameter for image-in
+D_ENTRY_PER_SLICE
+0x6024
+Number of CBUF entries used for one input slice
+D_WEIGHT_FORMAT
+0x6028
+Whether weight is compressed or not
+D_WEIGHT_SIZE_EXT_0
+0x602c
+Weight’s width and height after extension
+D_WEIGHT_SIZE_EXT_1
+0x6030
+Weight’s channel after extension and number of weight kernels
+D_WEIGHT_BYTES
+0x6034
+Total bytes of Weight
+D_WMB_BYTES
+0x6038
+Total bytes of WMB
+D_DATAOUT_SIZE_0
+0x603c
+Output cube’s width and height
+D_DATAOUT_SIZE_1
+0x6040
+Output cube’s channel
+D_ATOMICS
+0x6044
+Equals to output_data_cube_width * output_data_cube_height - 1
+D_RELEASE
+0x6048
+Slices of CBUF to be released at the end of current layer
+D_CONV_STRIDE_EXT
+0x604c
+Convolution x stride and convolution y stride after extension
+D_DILATION_EXT
+0x6050
+Dilation parameter
+D_ZERO_PADDING
+0x6054
+Left/right/top/bottom padding size
+D_ZERO_PADDING_VALUE
+0x6058
+Padding value
+D_BANK
+0x605c
+Number of data banks and weight banks in CBUF
+D_PRA_CFG
+0x6060
+PRA truncate in Winograd mode, range: 0~2

@@ -1,0 +1,174 @@
+S_STATUS
+0x5000
+Idle status of two register groups
+S_POINTER
+0x5004
+Pointer for CSB master and data path to access groups
+S_ARBITER
+0x5008
+WMB and Weight share same port to access external memory. This register controls the weight factor in the arbiter.
+S_CBUF_FLUSH_STATUS
+0x500c
+Indicates whether CBUF flush is finished after reset.
+D_OP_ENABLE
+0x5010
+Set it to 1 to kick off operation for current register group
+D_MISC_CFG
+0x5014
+Configuration of operation: convolution mode, precision, weight reuse, data reuse.
+D_DATAIN_FORMAT
+0x5018
+Input data format and pixel format
+D_DATAIN_SIZE_0
+0x501c
+Input cube’s width and height
+D_DATAIN_SIZE_1
+0x5020
+Input cube’s channel
+D_DATAIN_SIZE_EXT_0
+0x5024
+Input cube’s width and height after extension
+D_PIXEL_OFFSET
+0x5028
+For image-in mode, horizontal offset and vertical offset of the 1 st pixel.
+D_DAIN_RAM_TYPE
+0x502c
+Ram type of input RAM
+D_DAIN_ADDR_HIGH_0
+0x5030
+Higher 32bits of input data address when axi araddr is 64bits
+D_DAIN_ADDR_LOW_0
+0x5034
+Lower 32bits of input data address
+D_DAIN_ADDR_HIGH_1
+0x5038
+Higher 32bits of input data address of UV plane when axi araddr is 64bits
+D_DAIN_ADDR_LOW_1
+0x503c
+Lower 32bits of input data address of UV plane
+D_LINE_STRIDE
+0x5040
+Line stride of input cube
+D_LINE_UV_STRIDE
+0x5044
+Line stride of input cube’s UV plane
+D_SURF_STRIDE
+0x5048
+Surface stride of input cube
+D_DAIN_MAP
+0x504c
+Whether input cube is line packed or surface packed
+RESERVED
+0x5050
+This address is reserved
+RESERVED
+0x5054
+This address is reserved
+D_BATCH_NUMBER
+0x5058
+Number of batches
+D_BATCH_STRIDE
+0x505c
+The stride of input data cubes when batches > 1
+D_ENTRY_PER_SLICE
+0x5060
+Number of CBUF entries used for one input slice
+D_FETCH_GRAIN
+0x5064
+Number of slices to be fetched before sending update information to CSC
+D_WEIGHT_FORMAT
+0x5068
+Whether weight is compressed or not
+D_WEIGHT_SIZE_0
+0x506c
+The size of one kernel in bytes
+D_WEIGHT_SIZE_1
+0x5070
+Number of kernels
+D_WEIGHT_RAM_TYPE
+0x5074
+Ram type of weight
+D_WEIGHT_ADDR_HIGH
+0x5078
+Higher 32bits of weight address when axi araddr is 64bits
+D_WEIGHT_ADDR_LOW
+0x507c
+Lower 32bits of weight address
+D_WEIGHT_BYTES
+0x5080
+Total bytes of Weight
+D_WGS_ADDR_HIGH
+0x5084
+Higher 32bits of wgs address when axi araddr is 64bits
+D_WGS_ADDR_LOW
+0x5088
+Lower 32bits of wgs address
+D_WMB_ADDR_HIGH
+0x508c
+Higher 32bits of wmb address when axi araddr is 64bits
+D_WMB_ADDR_LOW
+0x5090
+Lower 32bits of wmb address
+D_WMB_BYTES
+0x5094
+Total bytes of WMB
+D_MEAN_FORMAT
+0x5098
+Whether mean registers are used or not
+D_MEAN_GLOBAL_0
+0x509c
+Global mean value for red in RGB or Y in YUV. Global mean value for green in RGB or U in YUV
+D_MEAN_GLOBAL_1
+0x50a0
+Global mean value for blue in RGB or V in YUV. Global mean value for alpha in ARGB/AYUV or X in XRGB
+D_CVT_CFG
+0x50a4
+Enable/disable input data converter in CDMA and number of bits to be truncated in the input data converter
+D_CVT_OFFSET
+0x50a8
+Offset of input data convertor
+D_CVT_SCALE
+0x50ac
+Scale of input data convertor
+D_CONV_STRIDE
+0x50b0
+Convolution x stride and convolution y stride
+D_ZERO_PADDING
+0x50b4
+Left/right/top/bottom padding size
+D_ZERO_PADDING_VALUE
+0x50b8
+Padding value
+D_BANK
+0x50bc
+Number of data banks and weight banks in CBUF
+D_NAN_FLUSH_TO_ZERO
+0x50c0
+Enable/Disable flushing input NaN to zero
+D_NAN_INPUT_DATA_NUM
+0x50c4
+Count NaN number in input data cube, update per layer
+D_NAN_INPUT_WEIGHT_NUM
+0x50c8
+Count NaN number in weight kernels, update per layer
+D_INF_INPUT_DATA_NUM
+0x50cc
+Count infinity number in input data cube, update per layer
+D_INF_INPUT_WEIGHT_NUM
+0x50d0
+Count infinity number in weight kernels, update per layer
+D_PERF_ENABLE
+0x50d4
+Enable/disable performance counter
+D_PERF_DAT_READ_STALL
+0x50d8
+Count blocking cycles of read request of input data, update per layer
+D_PERF_WT_READ_STALL
+0x50dc
+Count blocking cycles of read request of weight data, update per layer
+D_PERF_DAT_READ_LATENCY
+0x50e0
+Count total latency cycles of read response of input data, update per layer
+D_PERF_WT_READ_LATENCY
+0x50e4
+Count total latency cycles of read request of weight data, update per layer

@@ -1,0 +1,39 @@
+S_STATUS
+0x9000
+Idle status of two register groups
+S_POINTER
+0x9004
+Pointer for CSB master and data path to access groups
+D_OP_ENABLE
+0x9008
+Set it to 1 to kick off operation for current register group
+D_MISC_CFG
+0x900c
+Configuration of operation: convolution mode, precision, etc.
+D_DATAOUT_SIZE_0
+0x9010
+Input cube’s width and height after extension
+D_DATAOUT_SIZE_1
+0x9014
+Input cube’s channel after extension
+D_DATAOUT_ADDR
+0x9018
+Address of output cube
+D_BATCH_NUMBER
+0x901c
+Number of batches
+D_LINE_STRIDE
+0x9020
+Line stride of output cube
+D_SURF_STRIDE
+0x9024
+Line stride of surface cube
+D_DATAOUT_MAP
+0x9028
+Whether output cube is line packed or surface packed
+D_CLIP_CFG
+0x902c
+Number of bits to be truncated before sending to SDP
+D_OUT_SATURATION
+0x9030
+Output saturation count

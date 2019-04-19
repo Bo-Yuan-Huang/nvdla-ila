@@ -1,0 +1,48 @@
+S_STATUS
+0xe000
+Idle status of two register groups
+S_POINTER
+0xe004
+Pointer for CSB master and data path to access groups
+D_OP_ENABLE
+0xe008
+Set it to 1 to kick off operation for current register group
+D_DATA_CUBE_WIDTH
+0xe00c
+Input data cube’s width
+D_DATA_CUBE_HEIGHT
+0xe010
+Input data cube’s height
+D_DATA_CUBE_CHANNEL
+0xe014
+Input data cube’s channel
+D_SRC_BASE_ADDR_LOW
+0xe018
+Lower 32bits of input data address
+D_SRC_BASE_ADDR_HIGH
+0xe01c
+Higher 32bits of input data address when axi araddr is 64bits
+D_SRC_LINE_STRIDE
+0xe020
+Line stride of input cube
+D_SRC_SURFACE_STRIDE
+0xe024
+Surface stride of input cube
+D_SRC_DMA_CFG
+0xe028
+RAM type of input data cube
+D_SRC_COMPRESSION_EN
+0xe02c
+This register is not used in OpenDLA 1.0
+D_OPERATION_MODE
+0xe030
+Split number
+D_DATA_FORMAT
+0xe034
+Input data cube
+D_PERF_ENABLE
+0xe038
+Enable/Disable performance counting
+D_PERF_READ_STALL
+0xe03c
+Counting stalls of read requests

@@ -1,0 +1,138 @@
+S_STATUS
+0xf000
+Idle status of two register groups
+S_POINTER
+0xf004
+Pointer for CSB master and data path to access groups
+S_LUT_ACCESS_CFG
+0xf008
+LUT access address and type
+S_LUT_ACCESS_DATA
+0xf00c
+Data register of read or write LUT
+S_LUT_CFG
+0xf010
+LUT’s type: exponent or linear. And the selection between LE and LO tables.
+S_LUT_INFO
+0xf014
+LE and LO LUT index offset and selection
+S_LUT_LE_START_LOW
+0xf018
+Lower 32bits of start of LE LUT’s range
+S_LUT_LE_START_HIGH
+0xf01c
+Higher 6bits of start of LE LUT’s range
+S_LUT_LE_END_LOW
+0xf020
+Lower 32bits of end of LE LUT’s range
+S_LUT_LE_END_HIGH
+0xf024
+Higher 6bits of end of LE LUT’s range
+S_LUT_LO_START_LOW
+0xf028
+Lower 32bits of start of LO LUT’s range
+S_LUT_LO_START_HIGH
+0xf02c
+Higher 6bits of start of LO LUT’s range
+S_LUT_LO_END_LOW
+0xf030
+Lower 32bits of end of LO LUT’s range
+S_LUT_LO_END_HIGH
+0xf034
+Higher 6bits of end of LO LUT’s range
+S_LUT_LE_SLOPE_SCALE
+0xf038
+Slope scale parameter for LE LUT underflow and overflow, signed value
+S_LUT_LE_SLOPE_SHIFT
+0xf03c
+Slope shift parameter for LE_LUT underflow and overflow, signed value
+S_LUT_LO_SLOPE_SCALE
+0xf040
+Slope scale parameter for LO LUT underflow and overflow, signed value
+S_LUT_LO_SLOPE_SHIFT
+0xf044
+Slope shift parameter for LO_LUT underflow and overflow, signed value
+D_OP_ENABLE
+0xf048
+Set it to 1 to kick off operation for current register group
+D_FUNC_BYPASS
+0xf04c
+Square sum process bypass control and multiplier after interpolator bypass control
+D_DST_BASE_ADDR_LOW
+0xf050
+Lower 32bits of output data address
+D_DST_BASE_ADDR_HIGH
+0xf054
+Higher 32bits of output data address when axi awaddr is 64bits
+D_DST_LINE_STRIDE
+0xf058
+Line stride of output cube
+D_DST_SURFACE_STRIDE
+0xf05c
+Surface stride of output cube
+D_DST_DMA_CFG
+0xf060
+RAM type of output data cube
+D_DST_COMPRESSION_EN
+0xf064
+This register is not used in OpenDLA 1.0
+D_DATA_FORMAT
+0xf068
+Precision of input data
+D_NAN_FLUSH_TO_ZERO
+0xf06c
+Option to flush input NaN to zero
+D_LRN_CFG
+0xf070
+Normalization length
+D_DATIN_OFFSET
+0xf074
+Input data convertor offset
+D_DATIN_SCALE
+0xf078
+Input data convertor scale
+D_DATIN_SHIFTER
+0xf07c
+Input data convertor shifter value
+D_DATOUT_OFFSET
+0xf080
+Output data convertor offset
+D_DATOUT_SCALE
+0xf084
+Output data convertor scale
+D_DATOUT_SHIFTER
+0xf088
+Output data convertor shifter value
+D_NAN_INPUT_NUM
+0xf08c
+input NaN element number
+D_INF_INPUT_NUM
+0xf090
+input Infinity element number
+D_NAN_OUTPUT_NUM
+0xf094
+output NaN element number
+D_OUT_SATURATION
+0xf098
+saturated element number.
+D_PERF_ENABLE
+0xf09c
+Enable/Disable performance counting
+D_PERF_WRITE_STALL
+0xf0a0
+Element number that for both LUT under-flow
+D_PERF_LUT_UFLOW
+0xf0a4
+Element number that for both LUT under-flow
+D_PERF_LUT_OFLOW
+0xf0a8
+Element number that for both LUT over-flow
+D_PERF_LUT_HYBRID
+0xf0ac
+Element number that for both LUT miss, one is over-flow and the other is overflow
+D_PERF_LUT_LE_HIT
+0xf0b0
+Element number that for LE_lut hit only
+D_PERF_LUT_LO_HIT
+0xf0b4
+Element number that for LO_lut hit only

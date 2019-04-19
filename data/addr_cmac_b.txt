@@ -1,0 +1,12 @@
+S_STATUS
+0x8000
+Idle status of two register groups
+S_POINTER
+0x8004
+Pointer for CSB master and data path to access groups
+D_OP_ENABLE
+0x8008
+Set it to 1 to kick off operation for current register group
+D_MISC_CFG
+0x800c
+Configuration of operation: convolution mode, precision, etc.

@@ -1,0 +1,63 @@
+CFG_SRC_ADDR_LOW
+0x4000
+Lower 32bits of source address
+CFG_SRC_ADDR_HIGH
+0x4004
+Higher 32bits of source address when axi araddr is 64bits
+CFG_DST_ADDR_LOW
+0x4008
+Lower 32bits of dest address
+CFG_DST_ADDR_HIGH
+0x400c
+Higher 32bits of dest address when axi awaddr is 64bits
+CFG_LINE
+0x4010
+Size of one line
+CFG_CMD
+0x4014
+Ram type of source and destination
+CFG_LINE_REPEAT
+0x4018
+Number of lines to be moved in one surface
+CFG_SRC_LINE
+0x401c
+Source line stride
+CFG_DST_LINE
+0x4020
+Destination line stride
+CFG_SURF_REPEAT
+0x4024
+Number of surfaces to be moved in one operation
+CFG_SRC_SURF
+0x4028
+Source surface stride
+CFG_DST_SURF
+0x402c
+Destination surface stride
+CFG_OP
+0x4030
+This register is not used in NVDLA 1.0
+CFG_LAUNCH0
+0x4034
+Set it to 1 to kick off operations in group0
+CFG_LAUNCH1
+0x4038
+Set it to 1 to kick off operations in group1
+CFG_STATUS
+0x403c
+Enable/Disable of counting stalls
+STATUS
+0x4040
+Status register: idle status of bdma, group0 and group1
+STAUS_GRP0_READ_STALL
+0x4044
+Counting register of group0 read stall
+STATUS_GRP0_WRITE_STALL
+0x4048
+Counting register of group0 write stall
+STAUS_GRP1_READ_STALL
+0x404c
+Counting register of group1 read stall
+STATUS_GRP1_WRITE_STALL
+0x4050
+Counting register of group1 write stall

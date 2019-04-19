@@ -1,0 +1,75 @@
+S_STATUS
+0x10000
+Idle status of two register groups
+S_POINTER
+0x10004
+Pointer for CSB master and data path to access groups
+D_OP_ENABLE
+0x10008
+Set it to 1 to kick off operation for current register group
+D_MISC_CFG
+0x1000c
+Operation mode and precision
+D_DAIN_RAM_TYPE
+0x10010
+RAM type of input cube
+D_DATAIN_SIZE_0
+0x10014
+Input data cube’s width and height
+D_DATAIN_SIZE_1
+0x10018
+Input data cube’s channel
+D_DAIN_ADDR_HIGH
+0x1001c
+Higher 32bits of input data address when axi araddr is 64bits
+D_DAIN_ADDR_LOW
+0x10020
+Lower 32bits of input data address
+D_DAIN_LINE_STRIDE
+0x10024
+Line stride of input data cube
+D_DAIN_SURF_STRIDE
+0x10028
+Surface stride of input data cube
+D_DAIN_PLANAR_STRIDE
+0x1002c
+Input data planar stride, for merge mode only
+D_DAOUT_RAM_TYPE
+0x10030
+RAM type of output cube
+D_DATAOUT_SIZE_1
+0x10034
+Output data cube’s channel
+D_DAOUT_ADDR_HIGH
+0x10038
+Higher 32bits of output data address when axi awaddr is 64bits
+D_DAOUT_ADDR_LOW
+0x1003c
+Lower 32bits of output data address
+D_DAOUT_LINE_STRIDE
+0x10040
+Line stride of output data cube
+D_CONTRACT_STRIDE_0
+0x10044
+Input stride for each X step. Equals to (DATAOUT_CHANNEL+1) * BPE / 32 * DAIN_SURF_STRIDE. (BPE = (IN_PRECISION == INT8) ? 1 : 2;)
+D_CONTRACT_STRIDE_1
+0x10048
+Output stride corresponding to each line in input cube. equals to (DECONV_Y_STRIDE+1) * DAOUT_LINE_STRIDE
+D_DAOUT_SURF_STRIDE
+0x1004c
+Surface stride of output data cube
+D_DAOUT_PLANAR_STRIDE
+0x10050
+Output data planar stride, for split mode only
+D_DECONV_STRIDE
+0x10054
+Deconvolution x stride and y stride
+D_PERF_ENABLE
+0x10058
+Enable/Disable performance counting
+D_PERF_READ_STALL
+0x1005c
+RD_STALL Count stall cycles of read DMA for one layer
+D_PERF_WRITE_STALL
+0x10060
+WR_STALL Count stall cycles of write DMA for one layer

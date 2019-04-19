@@ -1,0 +1,21 @@
+CFG_RD_WEIGHT_0
+0x3000
+Register0 to control the read weight of clients in MCIF
+CFG_RD_WEIGHT_1
+0x3004
+Register1 to control the read weight of clients in MCIF
+CFG_RD_WEIGHT_2
+0x3008
+Register2 to control the read weight of clients in MCIF
+CFG_WR_WEIGHT_0
+0x300c
+Register0 to control the write weight of clients in MCIF
+CFG_WR_WEIGHT_1
+0x3010
+Register1 to control the write weight of clients in MCIF
+CFG_OUTSTANDING_CNT
+0x3014
+Outstanding AXI transactions in unit of 64Byte
+STATUS
+0x3018
+Idle status of SRAMIF

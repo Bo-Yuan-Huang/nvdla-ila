@@ -1,0 +1,12 @@
+HW_VERSION
+0x0000
+HW version of NVDLA
+INTR_MASK
+0x0004
+Interrupt mask control
+INTR_SET
+0x0008
+Interrupt set control
+INTR_STATUS
+0x000c
+Interrupt status

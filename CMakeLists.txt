@@ -29,8 +29,9 @@ find_package(ilang REQUIRED)
 # ---------------------------------------------------------------------------- #
 add_executable(${MyTarget} 
   app/main.cc
-  src/top.cc
   src/cdma.cc
+  src/nvdla_top.cc
+  src/utils.cc
 )
 
 target_include_directories(${MyTarget} PRIVATE include)

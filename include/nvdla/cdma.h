@@ -12,7 +12,7 @@
 #define CDMA_ILA_H__
 
 #include <ilang/ilang++.h>
-#include <nvdla/addr_space.h>
+#include <nvdla/configs/addr_space.h>
 
 /// \namespace ilang
 namespace ilang {

@@ -6,20 +6,30 @@
 // Check "LICENSE" which comes with this distribution for more information.
 // ============================================================================
 
-// File Name: top.h
+// File Name: nvdla_top.h
 
-#ifndef NVDLA_ILA_H__
-#define NVDLA_ILA_H__
+#ifndef NVDLA_TOP_H__
+#define NVDLA_TOP_H__
 
 #include <ilang/ilang++.h>
-#include <nvdla/cdma.h>
 
 /// \namespace ilang
 namespace ilang {
 
-void Foo();
+class NvDla {
+public:
+  NvDla();
+  ~NvDla();
+
+  static Ila NewIla(const std::string& name = "nvdla_top");
+
+private:
+  static void DefineArchState(Ila& m);
+  static void DefineCsbInstr(Ila& m);
+
+}; // class NvDla
 
 }; // namespace ilang
 
-#endif // NVDLA_ILA_H__
+#endif // NVDLA_TOP_H__
 

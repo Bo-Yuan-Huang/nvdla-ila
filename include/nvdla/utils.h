@@ -6,14 +6,22 @@
 // Check "LICENSE" which comes with this distribution for more information.
 // ============================================================================
 
-// File Name: main.cc
+// File Name: utils.h
 
-#include <iostream>
-#include <nvdla/nvdla_top.h>
+#ifndef NVDLA_ILA_UTILS_H__
+#define NVDLA_ILA_UTILS_H__
 
-int main() {
+#include <ilang/ilang++.h>
 
-  auto m = ilang::NvDla();
+namespace ilang {
 
-  return 0;
-}
+// Create new input variable in the ILA
+void NewInput(Ila& m, const std::string& name, const int& wid = 1);
+
+// Create new state variable in the ILA
+void NewState(Ila& m, const std::string& name, const int& wid = 1);
+
+}; // namespace ilang
+
+#endif // NVDLA_ILA_UTILS_H__
+

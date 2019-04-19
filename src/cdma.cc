@@ -9,7 +9,7 @@
 // File Name: cdma.cc
 
 #include <nvdla/cdma.h>
-#include <nvdla/hw_param.h>
+#include <nvdla/configs/hw_param.h>
 
 namespace ilang {
 

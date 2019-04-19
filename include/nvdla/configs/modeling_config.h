@@ -6,14 +6,17 @@
 // Check "LICENSE" which comes with this distribution for more information.
 // ============================================================================
 
-// File Name: main.cc
+// File Name: modeling_config.h
 
-#include <iostream>
-#include <nvdla/nvdla_top.h>
+#ifndef MODELING_CONFIG_H__
+#define MODELING_CONFIG_H__
 
-int main() {
+namespace ilang {
 
-  auto m = ilang::NvDla();
+// model Boolean expr as 1-bit bit-vector
+//#define MODEL_BOOL_AS_BV
 
-  return 0;
-}
+}; // namespace ilang
+
+#endif // MODELING_CONFIG_H__
+

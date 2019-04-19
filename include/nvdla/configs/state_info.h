@@ -6,14 +6,11 @@
 // Check "LICENSE" which comes with this distribution for more information.
 // ============================================================================
 
-// File Name: top.cc
+// File Name: state_info.h
 
-#include <nvdla/top.h>
+#ifndef STATE_INFO_H__
+#define STATE_INFO_H__
 
-namespace ilang {
+#include <nvdla/configs/state_info_top.h>
 
-void Foo() {
-  //
-}
-
-}; // namespace ilang
+#endif // STATE_INFO_H__

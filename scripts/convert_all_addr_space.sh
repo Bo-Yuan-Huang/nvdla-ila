@@ -6,6 +6,7 @@ DST_DIR=include/nvdla/configs
 
 F () {
   python3 $CONVERT_PY $SRC_DIR/addr_$1.txt $DST_DIR/addr_$1.h --prefix $1 
+  clang-format -i $DST_DIR/addr_$1.h
 }
 
 F bdma

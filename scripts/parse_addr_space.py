@@ -10,7 +10,7 @@ def Convert(in_file, out_file, prefix):
             fw.write('//\n')
             fw.write('// This ILA description is derived based on the NVDLA specification and design,\n')
             fw.write('// which is licensed under "NVIDIA Open NVDLA License and Agreement v1.0".\n')
-            fw.write('// Check "LICENSE" wich comes with this distribution for more information.\n')
+            fw.write('// Check "LICENSE" which comes with this distribution for more information.\n')
             fw.write('// ============================================================================\n')
             fw.write('\n')
             fw.write('// File Name: addr_{0}.h\n'.format(prefix.lower()))

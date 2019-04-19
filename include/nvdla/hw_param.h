@@ -6,14 +6,12 @@
 // Check "LICENSE" which comes with this distribution for more information.
 // ============================================================================
 
-// File Name: cdma.cc
+// File Name: hw_param.h
 
-#include <nvdla/cdma.h>
-#include <nvdla/hw_param.h>
+#ifndef HW_PARAM_H__
+#define HW_PARAM_H__
 
-namespace ilang {
+#include <nvdla/configs/hw_param_nv_small.h>
 
-//
-
-}; // namespace ilang
+#endif // HW_PARAM_H__
 

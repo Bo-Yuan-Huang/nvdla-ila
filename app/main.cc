@@ -14,6 +14,8 @@
 int main() {
 
   auto m = ilang::NvDla();
+  auto nvdla = m.NewIla();
+  ilang::ExportIlaPortable(nvdla, "nvdla.json");
 
   return 0;
 }

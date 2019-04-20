@@ -13,30 +13,41 @@
 
 namespace ilang {
 
-void NewInput(Ila& m, const std::string& name, const int& wid) {
+ExprRef BoolVal(const int& val) {
 #ifdef MODEL_BOOL_AS_BV
-  m.NewBvInput(name, wid);
+  return BvConst(val, 1);
+#else  // MODEL_BOOL_AS_BV
+  return BoolConst(val == 1);
+#endif // MODEL_BOOL_AS_BV
+}
+
+ExprRef IsTrue(const ExprRef& e) { return (e == BoolVal(1)); }
+
+ExprRef IsFalse(const ExprRef& e) { return (e == BoolVal(0)); }
+
+ExprRef NewInput(Ila& m, const std::string& name, const int& wid) {
+#ifdef MODEL_BOOL_AS_BV
+  return m.NewBvInput(name, wid);
 
 #else // MODEL_BOOL_AS_BV
   if (wid == 1) {
-    m.NewBoolInput(name);
+    return m.NewBoolInput(name);
   } else {
-    m.NewBvInput(name, wid);
+    return m.NewBvInput(name, wid);
   }
 
 #endif // MODEL_BOOL_AS_BV
 }
 
-void NewState(Ila& m, const std::string& name, const int& wid) {
+ExprRef NewState(Ila& m, const std::string& name, const int& wid) {
 #ifdef MODEL_BOOL_AS_BV
-  m.NewBvState(name, wid);
+  return m.NewBvState(name, wid);
 
 #else // MODEL_BOOL_AS_BV
-  m.NewBvInput(name, wid);
   if (wid == 1) {
-    m.NewBoolState(name);
+    return m.NewBoolState(name);
   } else {
-    m.NewBvState(name, wid);
+    return m.NewBvState(name, wid);
   }
 
 #endif // MODEL_BOOL_AS_BV

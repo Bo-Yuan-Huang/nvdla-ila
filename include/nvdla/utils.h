@@ -15,11 +15,20 @@
 
 namespace ilang {
 
+// Return a Boolean/bit-vector value based on the input
+ExprRef BoolVal(const int& val);
+
+// Return an expr that compares the value to true/1
+ExprRef IsTrue(const ExprRef& e);
+
+// Return an expr that compares the value to false/0
+ExprRef IsFalse(const ExprRef& e);
+
 // Create new input variable in the ILA
-void NewInput(Ila& m, const std::string& name, const int& wid = 1);
+ExprRef NewInput(Ila& m, const std::string& name, const int& wid = 1);
 
 // Create new state variable in the ILA
-void NewState(Ila& m, const std::string& name, const int& wid = 1);
+ExprRef NewState(Ila& m, const std::string& name, const int& wid = 1);
 
 }; // namespace ilang
 

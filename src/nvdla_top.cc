@@ -8,11 +8,36 @@
 
 // File Name: nvdla_top.cc
 
+#include <nvdla/configs/addr_space.h>
 #include <nvdla/configs/state_info_top.h>
 #include <nvdla/nvdla_top.h>
 #include <nvdla/utils.h>
 
 namespace ilang {
+
+const std::string NvDla::k_tag_glb = "tag_glb";
+const std::string NvDla::k_tag_mcif = "tag_mcif";
+const std::string NvDla::k_tag_bdma = "tag_bdma";
+const std::string NvDla::k_tag_cbuf = "tag_cbuf";
+const std::string NvDla::k_tag_cdma = "tag_cdma";
+const std::string NvDla::k_tag_csc = "tag_csc";
+const std::string NvDla::k_tag_cmac_a = "tag_cmac_a";
+const std::string NvDla::k_tag_cmac_b = "tag_cmac_b";
+const std::string NvDla::k_tag_cacc = "tag_cacc";
+const std::string NvDla::k_tag_sdp_rdma = "tag_sdp_rdma";
+const std::string NvDla::k_tag_sdp = "tag_sdp";
+const std::string NvDla::k_tag_pdp_rdma = "tag_pdp_rdma";
+const std::string NvDla::k_tag_pdp = "tag_pdp";
+const std::string NvDla::k_tag_cdp_rdma = "tag_cdp_rdma";
+const std::string NvDla::k_tag_cdp = "tag_cdp";
+const std::string NvDla::k_tag_rubic = "tag_rubic";
+
+const std::string NvDla::k_child_cdma = "cdma";
+const std::string NvDla::k_child_cbuf = "cbuf";
+const std::string NvDla::k_child_csc = "csc";
+const std::string NvDla::k_child_cmac_a = "cmac_a";
+const std::string NvDla::k_child_cmac_b = "cmac_b";
+const std::string NvDla::k_child_cacc = "cacc";
 
 NvDla::NvDla() {}
 
@@ -20,11 +45,22 @@ NvDla::~NvDla() {}
 
 Ila NvDla::NewIla(const std::string& name) {
   auto m = Ila(name);
-  DefineArchState(m);
+
+  DefineInterface(m);
+  DefineInternal(m);
+  DeclareChild(m);
+  DefineInstr(m);
+
+  // valid
+  m.SetValid(BoolVal(1)); // FIXME
+
+  // fetch
+  m.SetFetch(BvConst(1, 1)); // FIXME
+
   return m;
 }
 
-void NvDla::DefineArchState(Ila& m) {
+void NvDla::DefineInterface(Ila& m) {
   /***** configuration space bus (CSB) *****/
 
   /* Request channel
@@ -104,8 +140,130 @@ void NvDla::DefineArchState(Ila& m) {
   // TODO no SRAM in nv-small config
 }
 
-void NvDla::DefineCsbInstr(Ila& m) {
-  // TODO
+void NvDla::DefineInternal(Ila& m) {
+  /* Trigger signals (tag of child-ILAs) */
+
+  auto tag_glb = NewState(m, k_tag_glb);
+  auto tag_mcif = NewState(m, k_tag_mcif);
+  auto tag_bdma = NewState(m, k_tag_bdma);
+  auto tag_cbuf = NewState(m, k_tag_cbuf);
+  auto tag_cdma = NewState(m, k_tag_cdma);
+  auto tag_csc = NewState(m, k_tag_csc);
+  auto tag_cmac_a = NewState(m, k_tag_cmac_a);
+  auto tag_cmac_b = NewState(m, k_tag_cmac_b);
+  auto tag_cacc = NewState(m, k_tag_cacc);
+  auto tag_sdp_rdma = NewState(m, k_tag_sdp_rdma);
+  auto tag_sdp = NewState(m, k_tag_sdp);
+  auto tag_pdp_rdma = NewState(m, k_tag_pdp_rdma);
+  auto tag_pdp = NewState(m, k_tag_pdp);
+  auto tag_cdp_rdma = NewState(m, k_tag_cdp_rdma);
+  auto tag_cdp = NewState(m, k_tag_cdp);
+  auto tag_rubic = NewState(m, k_tag_rubic);
+
+  m.AddInit(IsFalse(tag_glb));
+  m.AddInit(IsFalse(tag_mcif));
+  m.AddInit(IsFalse(tag_bdma));
+  m.AddInit(IsFalse(tag_cbuf));
+  m.AddInit(IsFalse(tag_cdma));
+  m.AddInit(IsFalse(tag_csc));
+  m.AddInit(IsFalse(tag_cmac_a));
+  m.AddInit(IsFalse(tag_cmac_b));
+  m.AddInit(IsFalse(tag_cacc));
+  m.AddInit(IsFalse(tag_sdp_rdma));
+  m.AddInit(IsFalse(tag_sdp));
+  m.AddInit(IsFalse(tag_pdp_rdma));
+  m.AddInit(IsFalse(tag_pdp));
+  m.AddInit(IsFalse(tag_cdp_rdma));
+  m.AddInit(IsFalse(tag_cdp));
+  m.AddInit(IsFalse(tag_rubic));
+}
+
+void NvDla::DeclareChild(Ila& m) {
+  // CDMA
+  auto cdma_ila = m.NewChild(k_child_cdma);
+  cdma_ila.SetValid(IsTrue(m.state(k_tag_cdma)));
+
+  // CBUF
+  auto cbuf_ila = m.NewChild(k_child_cbuf); // XXX plain memory?
+  cbuf_ila.SetValid(IsTrue(m.state(k_tag_cbuf)));
+
+  // CSC
+  auto csc_ila = m.NewChild(k_child_csc);
+  csc_ila.SetValid(IsTrue(m.state(k_tag_csc)));
+
+#ifdef NVDLA_RETIMING_ENABLE
+  // CMAC
+  auto cmac_ila = m.NewChild(k_child_cmac_b);
+  cmac_ila.SetValid(IsTrue(m.state(k_tag_cmac_b)));
+
+  // CACC
+  auto cacc_ila = m.NewChild(k_child_cacc);
+  cacc_ila.SetValid(IsTrue(m.state(k_tag_cacc)));
+#endif
+}
+
+void NvDla::DefineInstr(Ila& m) {
+  /***** configuration space bus (CSB) *****/
+
+  // helper functions
+  auto is_csb = m.state(CSB2NVDLA_READY) & m.input(CSB2NVDLA_VALID);
+  auto csb_wr = (m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE));
+  auto csb_rd = (m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_READ));
+  auto raise_tag_val = BoolVal(1);
+
+  { // Write to CDMA CSB registers
+    auto instr = m.NewInstr("csb_wr_cdma");
+    auto decode = is_csb & csb_wr &
+                  (m.input(CSB2NVDLA_ADDR) >= CDMA_ADDR_SPACE_START) &
+                  (m.input(CSB2NVDLA_ADDR) <= CDMA_ADDR_SPACE_END);
+    instr.SetDecode(decode);
+
+    instr.SetProgram(m.child(k_child_cdma));
+
+    auto tag_update = raise_tag_val;
+    instr.SetUpdate(m.state(k_tag_cdma), tag_update);
+  }
+
+  { // Read from CDMA CSB registers
+    auto instr = m.NewInstr("csb_rd_cdma");
+    auto decode = is_csb & csb_rd &
+                  (m.input(CSB2NVDLA_ADDR) >= CDMA_ADDR_SPACE_START) &
+                  (m.input(CSB2NVDLA_ADDR) <= CDMA_ADDR_SPACE_END);
+    instr.SetDecode(decode);
+
+    instr.SetProgram(m.child(k_child_cdma));
+
+    auto tag_update = raise_tag_val;
+    instr.SetUpdate(m.state(k_tag_cdma), tag_update);
+  }
+
+  { // Write to CSC CSB registers
+    auto instr = m.NewInstr("csb_wr_csc");
+    auto decode = is_csb & csb_wr &
+                  (m.input(CSB2NVDLA_ADDR) >= CSC_ADDR_SPACE_START) &
+                  (m.input(CSB2NVDLA_ADDR) <= CSC_ADDR_SPACE_END);
+
+    instr.SetDecode(decode);
+
+    instr.SetProgram(m.child(k_child_csc));
+
+    auto tag_update = raise_tag_val;
+    instr.SetUpdate(m.state(k_tag_csc), tag_update);
+  }
+
+  { // Read from CSC CSB registers
+    auto instr = m.NewInstr("csb_rd_csc");
+    auto decode = is_csb & csb_rd &
+                  (m.input(CSB2NVDLA_ADDR) >= CSC_ADDR_SPACE_START) &
+                  (m.input(CSB2NVDLA_ADDR) <= CSC_ADDR_SPACE_END);
+
+    instr.SetDecode(decode);
+
+    instr.SetProgram(m.child(k_child_csc));
+
+    auto tag_update = raise_tag_val;
+    instr.SetUpdate(m.state(k_tag_csc), tag_update);
+  }
 }
 
 }; // namespace ilang

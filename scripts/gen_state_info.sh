@@ -6,7 +6,7 @@ DST_DIR=include/nvdla/configs
 
 F () {
   more $SRC_DIR/license_header.h.in > $DST_DIR/state_info_$1.h
-  python3 $GEN_PY $SRC_DIR/addr_$1.txt $DST_DIR/state_info_$1.h $1 --append True
+  python3 $GEN_PY $SRC_DIR/spec_$1.txt $DST_DIR/state_info_$1.h $1 --append True
   clang-format-6.0 -i $DST_DIR/state_info_$1.h
 }
 

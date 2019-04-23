@@ -15,6 +15,9 @@ namespace ilang {
 
 /* Configuration space bus */
 
+#define CSB_ADDR_WID 16
+#define CSB_DATA_WID 32
+
 #define CSB2NVDLA_VALID "csb2nvdla_valid"
 #define CSB2NVDLA_VALID_WID 1
 
@@ -54,6 +57,7 @@ namespace ilang {
 
 /* On-chip SRAM interface: SRAMIF */
 // TODO
+
 }; // namespace ilang
 
 #endif // STATE_INFO_TOP_H__

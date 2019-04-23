@@ -13,4 +13,21 @@
 
 #include <nvdla/configs/state_info_top.h>
 
+#include <nvdla/configs/state_info_bdma.h>
+#include <nvdla/configs/state_info_cacc.h>
+#include <nvdla/configs/state_info_cdma.h>
+#include <nvdla/configs/state_info_cdp.h>
+#include <nvdla/configs/state_info_cdp_rdma.h>
+#include <nvdla/configs/state_info_cmac_a.h>
+#include <nvdla/configs/state_info_cmac_b.h>
+#include <nvdla/configs/state_info_csc.h>
+#include <nvdla/configs/state_info_glb.h>
+#include <nvdla/configs/state_info_mcif.h>
+#include <nvdla/configs/state_info_pdp.h>
+#include <nvdla/configs/state_info_pdp_rdma.h>
+#include <nvdla/configs/state_info_rubik.h>
+#include <nvdla/configs/state_info_sdp.h>
+#include <nvdla/configs/state_info_sdp_rdma.h>
+#include <nvdla/configs/state_info_sramif.h>
+
 #endif // STATE_INFO_H__

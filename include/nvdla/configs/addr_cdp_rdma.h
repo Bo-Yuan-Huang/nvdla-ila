@@ -1,3 +1,11 @@
+// ============================================================================
+// Instruction-Level Abstraction of Nvidia Deep Learning Accelerator (NVDLA)
+//
+// This ILA description is derived based on the NVDLA specification and design,
+// which is licensed under "NVIDIA Open NVDLA License and Agreement v1.0".
+// Check "LICENSE" which comes with this distribution for more information.
+// ============================================================================
+
 // File Name: addr_cdp_rdma.h
 
 #ifndef NVDLA_ADDR_CDP_RDMA_H__

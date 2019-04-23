@@ -11,7 +11,7 @@ def GenStateInfo(in_file, out_file, prefix, append):
 
     with open(out_file, mode) as fw:
         # header
-        header = nvdla.GenHeader('state_info', 'STATE_INFO', prefix)
+        header = nvdla.GenHeaderHead('state_info', prefix)
         for l in header:
             fw.write(l)
 
@@ -36,7 +36,7 @@ def GenStateInfo(in_file, out_file, prefix, append):
             fw.write('\n')
 
         # tail
-        tail = nvdla.GenTail('STATE_INFO', prefix)
+        tail = nvdla.GenHeaderTail('state_info', prefix)
         for l in tail:
             fw.write(l)
 

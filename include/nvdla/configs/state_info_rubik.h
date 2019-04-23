@@ -11,7 +11,7 @@
 #ifndef STATE_INFO_RUBIK_H__
 #define STATE_INFO_RUBIK_H__
 
-/// \namespace ilang
+// namespace ilang
 namespace ilang {
 
 // Idle status of two register groups

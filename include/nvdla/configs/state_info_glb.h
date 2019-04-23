@@ -11,7 +11,7 @@
 #ifndef STATE_INFO_GLB_H__
 #define STATE_INFO_GLB_H__
 
-/// \namespace ilang
+// namespace ilang
 namespace ilang {
 
 // HW version of NVDLA

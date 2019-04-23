@@ -11,7 +11,7 @@
 #ifndef STATE_INFO_BDMA_H__
 #define STATE_INFO_BDMA_H__
 
-/// \namespace ilang
+// namespace ilang
 namespace ilang {
 
 // Lower 32bits of source address

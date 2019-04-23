@@ -1,13 +1,12 @@
 #!/usr/bin/bash
 
-GEN_PY=scripts/gen_csb_reg_macro.py
+GEN_PY=scripts/gen_state_info.py
 SRC_DIR=data
 DST_DIR=include/nvdla/configs
-FORMAT=/usr/share/vim/addons/syntax/clang-format.py
 
 F () {
   more $SRC_DIR/license_header.h.in > $DST_DIR/state_info_$1.h
-  python3 $GEN_PY $SRC_DIR/addr_$1.txt $DST_DIR/state_info_$1.h --prefix $1 --append True
+  python3 $GEN_PY $SRC_DIR/addr_$1.txt $DST_DIR/state_info_$1.h $1 --append True
   clang-format-6.0 -i $DST_DIR/state_info_$1.h
 }
 

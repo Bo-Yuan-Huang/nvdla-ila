@@ -16,24 +16,25 @@ namespace ilang {
 
 // Register0 to control the read weight of clients in MCIF
 #define MCIF_CFG_RD_WEIGHT_0_NAME "mcif_cfg_rd_weight_0"
-
+#define MCIF_CFG_RD_WEIGHT_0_BWID 32
 // Register1 to control the read weight of clients in MCIF
 #define MCIF_CFG_RD_WEIGHT_1_NAME "mcif_cfg_rd_weight_1"
-
+#define MCIF_CFG_RD_WEIGHT_1_BWID 32
 // Register2 to control the read weight of clients in MCIF
 #define MCIF_CFG_RD_WEIGHT_2_NAME "mcif_cfg_rd_weight_2"
-
+#define MCIF_CFG_RD_WEIGHT_2_BWID 32
 // Register0 to control the write weight of clients in MCIF
 #define MCIF_CFG_WR_WEIGHT_0_NAME "mcif_cfg_wr_weight_0"
-
+#define MCIF_CFG_WR_WEIGHT_0_BWID 32
 // Register1 to control the write weight of clients in MCIF
 #define MCIF_CFG_WR_WEIGHT_1_NAME "mcif_cfg_wr_weight_1"
-
+#define MCIF_CFG_WR_WEIGHT_1_BWID 32
 // Outstanding AXI transactions in unit of 64Byte
 #define MCIF_CFG_OUTSTANDING_CNT_NAME "mcif_cfg_outstanding_cnt"
-
+#define MCIF_CFG_OUTSTANDING_CNT_BWID 32
 // Idle status of MCIF
 #define MCIF_STATUS_NAME "mcif_status"
+#define MCIF_STATUS_BWID 32
 
 }; // namespace ilang
 

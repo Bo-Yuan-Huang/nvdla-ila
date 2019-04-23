@@ -18,6 +18,8 @@ namespace ilang {
 #define CSB_ADDR_WID 16
 #define CSB_DATA_WID 32
 
+#define CSB2NVDLA_VALID_NAME "csb2nvdla_valid"
+#define CSB2NVDLA_VALID_BCNT 1
 #define CSB2NVDLA_VALID "csb2nvdla_valid"
 #define CSB2NVDLA_VALID_WID 1
 

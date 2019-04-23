@@ -44,6 +44,7 @@ def GenHeader(file_pre, guard_pre, tag):
     guard_name = '{0}_{1}_H__'.format(guard_pre.upper(), tag.upper())
 
     lines = []
+    lines.append('\n')
     lines.append('// File Name: {0}\n'.format(file_name))
     lines.append('\n')
     lines.append('#ifndef {0}\n'.format(guard_name))
@@ -51,6 +52,7 @@ def GenHeader(file_pre, guard_pre, tag):
     lines.append('\n')
     lines.append('/// \\namespace ilang\n')
     lines.append('namespace ilang {\n\n')
+    lines.append('\n')
 
     return lines
 
@@ -61,6 +63,7 @@ def GenTail(guard_pre, tag):
     lines.append('\n')
     lines.append('}; // namespace ilnag\n\n')
     lines.append('#endif // {0}\n'.format(guard_name))
+    lines.append('\n')
 
     return lines
 

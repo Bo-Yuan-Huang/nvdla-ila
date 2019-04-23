@@ -21,13 +21,19 @@ def GenStateInfo(in_file, out_file, prefix, append):
             # comment
             fw.write('// {0}\n'.format(var['desp']))
             # name
-            fw.write('#define {0}_{1}_NAME "{2}_{3}"\n'.format(prefix.upper(), \
-                                                               var['name'].upper(), \
-                                                               prefix.lower(), \
-                                                               var['name'].lower()))
+            fw.write('#define {0}_{1} "{2}_{3}"\n'.format(prefix.upper(), \
+                                                          var['name'].upper(), \
+                                                          prefix.lower(), \
+                                                          var['name'].lower()))
+            # define address space
+            fw.write('#define {0}_{1}_ADDR {2}\n'.format(prefix.upper(), \
+                                                         var['name'].upper(), \
+                                                         var['addr']))
             # bit width
             fw.write('#define {0}_{1}_BWID 32\n'.format(prefix.upper(), \
-                                                           var['name'].upper()))
+                                                        var['name'].upper()))
+            # line break
+            fw.write('\n')
 
         # tail
         tail = nvdla.GenTail('STATE_INFO', prefix)

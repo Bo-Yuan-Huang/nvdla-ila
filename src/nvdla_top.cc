@@ -8,8 +8,9 @@
 
 // File Name: nvdla_top.cc
 
+#include <nvdla/cdma.h>
 #include <nvdla/configs/addr_space.h>
-#include <nvdla/configs/state_info_top.h>
+#include <nvdla/configs/state_info.h>
 #include <nvdla/nvdla_top.h>
 #include <nvdla/utils.h>
 
@@ -43,12 +44,12 @@ NvDla::NvDla() {}
 
 NvDla::~NvDla() {}
 
-Ila NvDla::NewIla(const std::string& name) {
+Ila NvDla::New(const std::string& name) {
   auto m = Ila(name);
 
   DefineInterface(m);
   DefineInternal(m);
-  DeclareChild(m);
+  DefineChild(m);
   DefineInstr(m);
 
   // valid
@@ -58,6 +59,48 @@ Ila NvDla::NewIla(const std::string& name) {
   m.SetFetch(BvConst(1, 1)); // FIXME
 
   return m;
+}
+
+std::vector<ExprRef> NvDla::Assumptions(Ila& m) {
+  auto assumptions = std::vector<ExprRef>();
+
+  { // CSB request channel vs. read response
+    // no (immediate) request at time of previous read response
+    auto imm = m.input(CSB2NVDLA_VALID) & m.state(NVDLA2CSB_VALID);
+    auto no_imm_rd = IsFalse(imm);
+    assumptions.push_back(no_imm_rd);
+  }
+
+  { // CSB request channel vs. read response
+    // no (immediate) request at time of previous write response
+    auto imm = m.input(CSB2NVDLA_VALID) & m.state(NVDLA2CSB_WR_COMPLETE);
+    auto no_imm_wr = IsFalse(imm);
+    assumptions.push_back(no_imm_wr);
+  }
+
+  return assumptions;
+}
+
+std::vector<ExprRef> NvDla::Invariants(Ila& m) {
+  auto invariants = std::vector<ExprRef>();
+
+#if 0
+  { // CSB request channel vs. read response
+    // not allow (immediate) request at time of previous read response
+    auto imm = m.state(CSB2NVDLA_READY) & m.state(NVDLA2CSB_VALID);
+    auto not_allow_imm_rd = IsFalse(imm);
+    invariants.push_back(not_allow_imm_rd);
+  }
+
+  { // CSB request channel vs. write response
+    // not allow (immediate) request at time of previous write response
+    auto imm = m.state(CSB2NVDLA_READY) & m.state(NVDLA2CSB_WR_COMPLETE);
+    auto not_allow_imm_wr = IsFalse(imm);
+    invariants.push_back(not_allow_imm_wr);
+  }
+#endif
+
+  return invariants;
 }
 
 void NvDla::DefineInterface(Ila& m) {
@@ -74,26 +117,26 @@ void NvDla::DefineInterface(Ila& m) {
    */
 
   // Indicates that a request is valid
-  NewInput(m, CSB2NVDLA_VALID, CSB2NVDLA_VALID_WID);
+  NewInput(m, CSB2NVDLA_VALID, CSB2NVDLA_VALID_BWID);
 
   // Indicates that the receiver is ready to take a request
-  NewState(m, CSB2NVDLA_READY, CSB2NVDLA_READY_WID);
+  NewState(m, CSB2NVDLA_READY, CSB2NVDLA_READY_BWID);
 
   // Address. Aligned to word boundary.
-  NewInput(m, CSB2NVDLA_ADDR, CSB2NVDLA_ADDR_WID);
+  NewInput(m, CSB2NVDLA_ADDR, CSB2NVDLA_ADDR_BWID);
 
   // Write data
-  NewInput(m, CSB2NVDLA_WDAT, CSB2NVDLA_WDAT_WID);
+  NewInput(m, CSB2NVDLA_WDAT, CSB2NVDLA_WDAT_BWID);
 
   // Write flag.
   // 1'b0: Request is a read request.
   // 1'b1: Request is a write request.
-  NewInput(m, CSB2NVDLA_WRITE, CSB2NVDLA_WRITE_WID);
+  NewInput(m, CSB2NVDLA_WRITE, CSB2NVDLA_WRITE_BWID);
 
   // Non-posted write transaction indicator.
   // 1'b0: Request is a posted write request.
   // 1'b1: Indicates a non-posted write request.
-  NewInput(m, CSB2NVDLA_NPOSTED, CSB2NVDLA_NPOSTED_WID);
+  NewInput(m, CSB2NVDLA_NPOSTED, CSB2NVDLA_NPOSTED_BWID);
 
   /* Read data channel
    * NVDLA returns read-response data to the host in strict request order; that
@@ -105,10 +148,10 @@ void NvDla::DefineInterface(Ila& m) {
    */
 
   // Indicates that read data is valid.
-  NewState(m, NVDLA2CSB_VALID, NVDLA2CSB_VALID_WID);
+  NewState(m, NVDLA2CSB_VALID, NVDLA2CSB_VALID_BWID);
 
   // Data corresponding to a read request, or zero in the event of an error.
-  NewState(m, NVDLA2CSB_DATA, NVDLA2CSB_DATA_WID);
+  NewState(m, NVDLA2CSB_DATA, NVDLA2CSB_DATA_BWID);
 
   /* Write response channel
    * NVDLA will return write completion to the host in request order for every
@@ -118,7 +161,7 @@ void NvDla::DefineInterface(Ila& m) {
    */
 
   // Indicates that a CSB write has completed.
-  NewState(m, NVDLA2CSB_WR_COMPLETE, NVDLA2CSB_WR_COMPLETE_WID);
+  NewState(m, NVDLA2CSB_WR_COMPLETE, NVDLA2CSB_WR_COMPLETE_BWID);
 
   /* Host interrupt
    * NVDLA provides an asynchronous (interrupt-driven) return channel to deliver
@@ -131,7 +174,7 @@ void NvDla::DefineInterface(Ila& m) {
    */
 
   // Active high while an interrupt is pending from NVDLA.
-  NewState(m, NVDLA2CORE_INTERRUPT, NVDLA2CORE_INTERRUPT_WID);
+  NewState(m, NVDLA2CORE_INTERRUPT, NVDLA2CORE_INTERRUPT_BWID);
 
   /***** System interconnect: DBBIF *****/
   // TODO abstract AXI protocol
@@ -178,10 +221,9 @@ void NvDla::DefineInternal(Ila& m) {
   m.AddInit(IsFalse(tag_rubic));
 }
 
-void NvDla::DeclareChild(Ila& m) {
+void NvDla::DefineChild(Ila& m) {
   // CDMA
-  auto cdma_ila = m.NewChild(k_child_cdma);
-  cdma_ila.SetValid(IsTrue(m.state(k_tag_cdma)));
+  auto cdma = Cdma::New(m, k_child_cdma);
 
   // CBUF
   auto cbuf_ila = m.NewChild(k_child_cbuf); // XXX plain memory?

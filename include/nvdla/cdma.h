@@ -12,12 +12,28 @@
 #define CDMA_ILA_H__
 
 #include <ilang/ilang++.h>
-#include <nvdla/configs/addr_space.h>
+#include <nvdla/nvdla_top.h>
 
 /// \namespace ilang
 namespace ilang {
 
-//
+class Cdma : protected NvDla {
+public:
+  Cdma();
+  ~Cdma();
+
+  static Ila New(Ila& parent, const std::string& name = "cdma");
+
+protected:
+  //
+
+private:
+  static void DefineInterface(Ila& m);
+  static void DefineInternal(Ila& m);
+  static void DefineChild(Ila& m);
+  static void DefineInstr(Ila& m);
+
+}; // class Cdma
 
 }; // namespace ilang
 

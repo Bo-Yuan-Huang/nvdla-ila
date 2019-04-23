@@ -11,11 +11,17 @@
 #include <iostream>
 #include <nvdla/nvdla_top.h>
 
+using namespace ilang;
+
 int main() {
 
-  auto m = ilang::NvDla();
-  auto nvdla = m.NewIla();
-  ilang::ExportIlaPortable(nvdla, "nvdla.json");
+  LogToErr(true);
+
+  auto nvdla = NvDla::New();
+  ExportIlaPortable(nvdla, "nvdla.json");
+
+  auto assumptions = NvDla::Assumptions(nvdla);
+  auto invariants = NvDla::Invariants(nvdla);
 
   return 0;
 }

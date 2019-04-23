@@ -11,6 +11,7 @@
 #ifndef NVDLA_ILA_ADDR_SPACE_H__
 #define NVDLA_ILA_ADDR_SPACE_H__
 
+#if 0
 #include <nvdla/configs/addr_bdma.h>
 #include <nvdla/configs/addr_cacc.h>
 #include <nvdla/configs/addr_cdma.h>
@@ -27,6 +28,7 @@
 #include <nvdla/configs/addr_sdp.h>
 #include <nvdla/configs/addr_sdp_rdma.h>
 #include <nvdla/configs/addr_sramif.h>
+#endif
 
 /// \namespace ilang
 namespace ilang {

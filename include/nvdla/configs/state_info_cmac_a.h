@@ -15,16 +15,23 @@
 namespace ilang {
 
 // Idle status of two register groups
-#define CMAC_A_S_STATUS_NAME "cmac_a_s_status"
+#define CMAC_A_S_STATUS "cmac_a_s_status"
+#define CMAC_A_S_STATUS_ADDR 0x7000
 #define CMAC_A_S_STATUS_BWID 32
+
 // Pointer for CSB master and data path to access groups
-#define CMAC_A_S_POINTER_NAME "cmac_a_s_pointer"
+#define CMAC_A_S_POINTER "cmac_a_s_pointer"
+#define CMAC_A_S_POINTER_ADDR 0x7004
 #define CMAC_A_S_POINTER_BWID 32
+
 // Set it to 1 to kick off operation for current register group
-#define CMAC_A_D_OP_ENABLE_NAME "cmac_a_d_op_enable"
+#define CMAC_A_D_OP_ENABLE "cmac_a_d_op_enable"
+#define CMAC_A_D_OP_ENABLE_ADDR 0x7008
 #define CMAC_A_D_OP_ENABLE_BWID 32
+
 // Configuration of operation: convolution mode, precision, etc.
-#define CMAC_A_D_MISC_CFG_NAME "cmac_a_d_misc_cfg"
+#define CMAC_A_D_MISC_CFG "cmac_a_d_misc_cfg"
+#define CMAC_A_D_MISC_CFG_ADDR 0x700c
 #define CMAC_A_D_MISC_CFG_BWID 32
 
 }; // namespace ilang

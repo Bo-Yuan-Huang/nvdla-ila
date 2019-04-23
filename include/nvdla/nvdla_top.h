@@ -13,6 +13,7 @@
 
 #include <ilang/ilang++.h>
 #include <string>
+#include <vector>
 
 /// \namespace ilang
 namespace ilang {
@@ -22,7 +23,9 @@ public:
   NvDla();
   ~NvDla();
 
-  static Ila NewIla(const std::string& name = "nvdla_top");
+  static Ila New(const std::string& name = "nvdla_top");
+  static std::vector<ExprRef> Assumptions(Ila& m);
+  static std::vector<ExprRef> Invariants(Ila& m);
 
 protected:
   // signal name of the child ILA trigger
@@ -53,7 +56,7 @@ protected:
 private:
   static void DefineInterface(Ila& m);
   static void DefineInternal(Ila& m);
-  static void DeclareChild(Ila& m);
+  static void DefineChild(Ila& m);
   static void DefineInstr(Ila& m);
 
 }; // class NvDla

@@ -1,12 +1,12 @@
 #!/usr/bin/bash
 
-CONVERT_PY=scripts/parse_addr_space.py
+GEN_PY=scripts/gen_addr_space.py
 SRC_DIR=data
 DST_DIR=include/nvdla/configs
 
 F () {
-  python3 $CONVERT_PY $SRC_DIR/addr_$1.txt $DST_DIR/addr_$1.h --prefix $1 
-  clang-format -i $DST_DIR/addr_$1.h
+  python3 $GEN_PY $SRC_DIR/addr_$1.txt $DST_DIR/addr_$1.h $1 
+  clang-format-6.0 -i $DST_DIR/addr_$1.h
 }
 
 F bdma

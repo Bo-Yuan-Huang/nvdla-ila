@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_cacc(Ila& m) {
+void StateDefineCacc(Ila& m) {
   // Idle status of two register groups
   NewState(m, CACC_S_STATUS, CACC_S_STATUS_BWID);
 

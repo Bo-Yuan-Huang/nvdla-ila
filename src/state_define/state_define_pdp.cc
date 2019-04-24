@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_pdp(Ila& m) {
+void StateDefinePdp(Ila& m) {
   // Idle status of two register groups
   NewState(m, PDP_S_STATUS, PDP_S_STATUS_BWID);
 

@@ -33,7 +33,7 @@ def GenStateDefine(unit, spec, odir, append):
             fw.write(l)
 
         # body
-        fw.write('void StateDefine_{0} (Ila& m) {{\n'.format(unit.lower()))
+        fw.write('void StateDefine{0} (Ila& m) {{\n'.format(unit.title()))
 
         var_pairs = nvdla.ParseNvDlaSpec(spec)
         for var in var_pairs:

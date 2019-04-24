@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_cdma(Ila& m) {
+void StateDefineCdma(Ila& m) {
   // Idle status of two register groups
   NewState(m, CDMA_S_STATUS, CDMA_S_STATUS_BWID);
 

@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_rubik(Ila& m) {
+void StateDefineRubik(Ila& m) {
   // Idle status of two register groups
   NewState(m, RUBIK_S_STATUS, RUBIK_S_STATUS_BWID);
 

@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_cmac_a(Ila& m) {
+void StateDefineCmac_A(Ila& m) {
   // Idle status of two register groups
   NewState(m, CMAC_A_S_STATUS, CMAC_A_S_STATUS_BWID);
 

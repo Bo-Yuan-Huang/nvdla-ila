@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_bdma(Ila& m) {
+void StateDefineBdma(Ila& m) {
   // Lower 32bits of source address
   NewState(m, BDMA_CFG_SRC_ADDR_LOW, BDMA_CFG_SRC_ADDR_LOW_BWID);
 

@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_csc(Ila& m) {
+void StateDefineCsc(Ila& m) {
   // Idle status of two register groups
   NewState(m, CSC_S_STATUS, CSC_S_STATUS_BWID);
 

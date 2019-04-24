@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_mcif(Ila& m) {
+void StateDefineMcif(Ila& m) {
   // Register0 to control the read weight of clients in MCIF
   NewState(m, MCIF_CFG_RD_WEIGHT_0, MCIF_CFG_RD_WEIGHT_0_BWID);
 

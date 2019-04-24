@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_glb(Ila& m) {
+void StateDefineGlb(Ila& m) {
   // HW version of NVDLA
   NewState(m, GLB_HW_VERSION, GLB_HW_VERSION_BWID);
 

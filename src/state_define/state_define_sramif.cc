@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_sramif(Ila& m) {
+void StateDefineSramif(Ila& m) {
   // Register0 to control the read weight of clients in MCIF
   NewState(m, SRAMIF_CFG_RD_WEIGHT_0, SRAMIF_CFG_RD_WEIGHT_0_BWID);
 

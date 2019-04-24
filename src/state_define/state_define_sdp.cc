@@ -15,7 +15,7 @@
 // namespace ilang
 namespace ilang {
 
-void StateDefine_sdp(Ila& m) {
+void StateDefineSdp(Ila& m) {
   // Idle status of two register groups
   NewState(m, SDP_S_STATUS, SDP_S_STATUS_BWID);
 

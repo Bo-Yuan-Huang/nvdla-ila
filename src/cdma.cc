@@ -16,7 +16,7 @@
 
 namespace ilang {
 
-void StateDefine_cdma(Ila& m);
+void StateDefineCdma(Ila& m);
 
 Ila Cdma::New(Ila& parent, const std::string& name) {
   auto m = parent.NewChild(name);
@@ -39,7 +39,8 @@ Ila Cdma::New(Ila& parent, const std::string& name) {
 
 void Cdma::DefineInterface(Ila& m) {
   // CSB accessable registers
-  StateDefine_cdma(m);
+  StateDefineCdma(m);
+  // StateInitCdma(m);
 }
 
 void Cdma::DefineInternal(Ila& m) {

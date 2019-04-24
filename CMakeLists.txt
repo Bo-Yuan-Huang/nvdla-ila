@@ -32,6 +32,7 @@ add_executable(${MyTarget}
   src/cdma.cc
   src/nvdla_top.cc
   src/utils.cc
+
   src/state_define/state_define_bdma.cc
   src/state_define/state_define_cacc.cc
   src/state_define/state_define_cdma.cc
@@ -39,6 +40,7 @@ add_executable(${MyTarget}
   src/state_define/state_define_cdp_rdma.cc
   src/state_define/state_define_cmac_a.cc
   src/state_define/state_define_cmac_b.cc
+  src/state_define/state_define_csb.cc
   src/state_define/state_define_csc.cc
   src/state_define/state_define_glb.cc
   src/state_define/state_define_mcif.cc
@@ -48,6 +50,10 @@ add_executable(${MyTarget}
   src/state_define/state_define_sdp.cc
   src/state_define/state_define_sdp_rdma.cc
   src/state_define/state_define_sramif.cc
+
+  src/state_init/state_init_csb.cc
+  src/state_init/state_init_glb.cc
+  src/state_init/state_init_mcif.cc
 )
 
 target_include_directories(${MyTarget} PRIVATE include)

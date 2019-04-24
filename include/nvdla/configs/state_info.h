@@ -11,8 +11,6 @@
 #ifndef STATE_INFO_H__
 #define STATE_INFO_H__
 
-#include <nvdla/configs/state_info_top.h>
-
 #include <nvdla/configs/state_info_bdma.h>
 #include <nvdla/configs/state_info_cacc.h>
 #include <nvdla/configs/state_info_cdma.h>
@@ -20,6 +18,7 @@
 #include <nvdla/configs/state_info_cdp_rdma.h>
 #include <nvdla/configs/state_info_cmac_a.h>
 #include <nvdla/configs/state_info_cmac_b.h>
+#include <nvdla/configs/state_info_csb.h>
 #include <nvdla/configs/state_info_csc.h>
 #include <nvdla/configs/state_info_glb.h>
 #include <nvdla/configs/state_info_mcif.h>

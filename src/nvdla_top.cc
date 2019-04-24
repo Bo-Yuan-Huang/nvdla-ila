@@ -16,6 +16,7 @@
 
 namespace ilang {
 
+// static data member
 const std::string NvDla::k_tag_glb = "tag_glb";
 const std::string NvDla::k_tag_mcif = "tag_mcif";
 const std::string NvDla::k_tag_bdma = "tag_bdma";
@@ -39,6 +40,20 @@ const std::string NvDla::k_child_csc = "csc";
 const std::string NvDla::k_child_cmac_a = "cmac_a";
 const std::string NvDla::k_child_cmac_b = "cmac_b";
 const std::string NvDla::k_child_cacc = "cacc";
+
+// state define methods (extern)
+void StateDefineCsb(Ila& m);
+void StateDefineGlb(Ila& m);
+void StateDefineMcif(Ila& m);
+void StateDefineSramif(Ila& m);
+void StateDefineBdma(Ila& m);
+
+// state init methods (extern)
+void StateInitCsb(Ila& m);
+void StateInitGlb(Ila& m);
+void StateInitMcif(Ila& m);
+void StateInitSramif(Ila& m);
+void StateInitBdma(Ila& m);
 
 NvDla::NvDla() {}
 
@@ -104,83 +119,37 @@ std::vector<ExprRef> NvDla::Invariants(Ila& m) {
 }
 
 void NvDla::DefineInterface(Ila& m) {
-  /***** configuration space bus (CSB) *****/
+  // CSB
+  StateDefineCsb(m);
+  StateInitCsb(m);
 
-  /* Request channel
-   * The request channel follows a valid/ready protocol; a data transaction
-   * occurs on the request channel when and only when the valid signal (from the
-   * host) and the ready signal (from NVDLA) are both asserted in the same clock
-   * cycle. Each request to CSB has a fixed request size of 32 bits of data, and
-   * has a fixed 16bit address size. CSB does not support any form of burst
-   * requests; each packet sent down the request channel is independent from any
-   * other packet.
-   */
+#if 0
+  // DBBIF (abstract AXI protocol)
+  StateDefineDbbif(m); // TODO
+  StateInitDbbif(m);
+#endif
 
-  // Indicates that a request is valid
-  NewInput(m, CSB2NVDLA_VALID, CSB2NVDLA_VALID_BWID);
+  // GLB
+  StateDefineGlb(m);
+  StateInitGlb(m);
 
-  // Indicates that the receiver is ready to take a request
-  NewState(m, CSB2NVDLA_READY, CSB2NVDLA_READY_BWID);
+  // MCIF
+  StateDefineMcif(m);
+  StateInitMcif(m);
 
-  // Address. Aligned to word boundary.
-  NewInput(m, CSB2NVDLA_ADDR, CSB2NVDLA_ADDR_BWID);
+#ifdef NVDLA_SECONDARY_MEMIF_ENABLE
+  // SRAMIF
+  StateDefineSramif(m);
+  StateInitSramif(m);
+#endif // NVDLA_SECONDARY_MEMIF_ENABLE
 
-  // Write data
-  NewInput(m, CSB2NVDLA_WDAT, CSB2NVDLA_WDAT_BWID);
+#ifdef NVDLA_BDMA_ENABLE
+  // BDMA
+  StateDefineBdma(m);
+  StateInitBdma(m);
+#endif // NVDLA_BDMA_ENABLE
 
-  // Write flag.
-  // 1'b0: Request is a read request.
-  // 1'b1: Request is a write request.
-  NewInput(m, CSB2NVDLA_WRITE, CSB2NVDLA_WRITE_BWID);
-
-  // Non-posted write transaction indicator.
-  // 1'b0: Request is a posted write request.
-  // 1'b1: Indicates a non-posted write request.
-  NewInput(m, CSB2NVDLA_NPOSTED, CSB2NVDLA_NPOSTED_BWID);
-
-  /* Read data channel
-   * NVDLA returns read-response data to the host in strict request order; that
-   * is to say, each request packet (above) for which “write” is set to 0 will
-   * have exactly one response, and that response cannot jump forward or
-   * backwards relative to other reads. The read data channel follows a
-   * valid-only protocol; as such, the host cannot apply back-pressure to the
-   * NVDLA on this interface.
-   */
-
-  // Indicates that read data is valid.
-  NewState(m, NVDLA2CSB_VALID, NVDLA2CSB_VALID_BWID);
-
-  // Data corresponding to a read request, or zero in the event of an error.
-  NewState(m, NVDLA2CSB_DATA, NVDLA2CSB_DATA_BWID);
-
-  /* Write response channel
-   * NVDLA will return write completion to the host in request order for every
-   * non-posted write. The write completion channel also follows a valid-only
-   * protocol, and as such, the host cannot back-pressure NVDLA on this
-   * interface.
-   */
-
-  // Indicates that a CSB write has completed.
-  NewState(m, NVDLA2CSB_WR_COMPLETE, NVDLA2CSB_WR_COMPLETE_BWID);
-
-  /* Host interrupt
-   * NVDLA provides an asynchronous (interrupt-driven) return channel to deliver
-   * event notifications to the CPU. The interrupt signal is a level-driven
-   * interrupt that is asserted high as long as the NVDLA core has interrupts
-   * pending. Interrupts are pending if any bits are set in GLB’s INTR_STATUS
-   * register that are also not masked out (i.e., set to zero) in the INTR_MASK
-   * register. The NVDLA interrupt signal is on the same clock domain as the CSB
-   * interface.
-   */
-
-  // Active high while an interrupt is pending from NVDLA.
-  NewState(m, NVDLA2CORE_INTERRUPT, NVDLA2CORE_INTERRUPT_BWID);
-
-  /***** System interconnect: DBBIF *****/
-  // TODO abstract AXI protocol
-
-  /***** On-chip SRAM interface: SRAMIF *****/
-  // TODO no SRAM in nv-small config
+  return;
 }
 
 void NvDla::DefineInternal(Ila& m) {
@@ -226,7 +195,7 @@ void NvDla::DefineChild(Ila& m) {
   auto cdma = Cdma::New(m, k_child_cdma);
 
   // CBUF
-  auto cbuf_ila = m.NewChild(k_child_cbuf); // XXX plain memory?
+  auto cbuf_ila = m.NewChild(k_child_cbuf);
   cbuf_ila.SetValid(IsTrue(m.state(k_tag_cbuf)));
 
   // CSC
@@ -242,6 +211,12 @@ void NvDla::DefineChild(Ila& m) {
   auto cacc_ila = m.NewChild(k_child_cacc);
   cacc_ila.SetValid(IsTrue(m.state(k_tag_cacc)));
 #endif
+
+#ifdef NVDLA_BDMA_ENABLE
+  auto bdma = Bdma::New(m, k_child_bdma);
+#endif // NVDLA_BDMA_ENABLE
+
+  // TODO other sub-units
 }
 
 void NvDla::DefineInstr(Ila& m) {

@@ -6,20 +6,36 @@
 // Check "LICENSE" which comes with this distribution for more information.
 // ============================================================================
 
-// File Name: modeling_config.h
+// File Name: csc.h
 
-#ifndef MODELING_CONFIG_H__
-#define MODELING_CONFIG_H__
+#ifndef CSC_ILA_H__
+#define CSC_ILA_H__
 
+#include <ilang/ilang++.h>
+#include <nvdla/nvdla_top.h>
+
+// namespace ilang
 namespace ilang {
 
-// model Boolean expr as 1-bit bit-vector
-//#define MODEL_BOOL_AS_BV
+class Csc : protected NvDla {
+public:
+  Csc();
+  ~Csc();
 
-// model AXI protocol
-//#define MODEL_AXI_DETAIL
+  static Ila New(Ila& parent, const std::string& name = "csc");
+
+protected:
+  //
+
+private:
+  static void DefineInterface(Ila& m);
+  static void DefineInternal(Ila& m);
+  static void DefineChild(Ila& m);
+  static void DefineInstr(Ila& m);
+
+}; // class Csc
 
 }; // namespace ilang
 
-#endif // MODELING_CONFIG_H__
+#endif // CSC_ILA_H__
 

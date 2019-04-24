@@ -8,9 +8,12 @@
 
 // File Name: nvdla_top.cc
 
+#include <nvdla/cbuf.h>
 #include <nvdla/cdma.h>
 #include <nvdla/configs/addr_space.h>
+#include <nvdla/configs/modeling_config.h>
 #include <nvdla/configs/state_info.h>
+#include <nvdla/csc.h>
 #include <nvdla/nvdla_top.h>
 #include <nvdla/utils.h>
 
@@ -123,9 +126,9 @@ void NvDla::DefineInterface(Ila& m) {
   StateDefineCsb(m);
   StateInitCsb(m);
 
-#if 0
+#ifdef MODEL_AXI_DETAIL
   // DBBIF (abstract AXI protocol)
-  StateDefineDbbif(m); // TODO
+  StateDefineDbbif(m);
   StateInitDbbif(m);
 #endif
 
@@ -142,12 +145,6 @@ void NvDla::DefineInterface(Ila& m) {
   StateDefineSramif(m);
   StateInitSramif(m);
 #endif // NVDLA_SECONDARY_MEMIF_ENABLE
-
-#ifdef NVDLA_BDMA_ENABLE
-  // BDMA
-  StateDefineBdma(m);
-  StateInitBdma(m);
-#endif // NVDLA_BDMA_ENABLE
 
   return;
 }
@@ -195,33 +192,52 @@ void NvDla::DefineChild(Ila& m) {
   auto cdma = Cdma::New(m, k_child_cdma);
 
   // CBUF
-  auto cbuf_ila = m.NewChild(k_child_cbuf);
-  cbuf_ila.SetValid(IsTrue(m.state(k_tag_cbuf)));
+  auto cbuf = Cbuf::New(m, k_child_cbuf);
 
   // CSC
-  auto csc_ila = m.NewChild(k_child_csc);
-  csc_ila.SetValid(IsTrue(m.state(k_tag_csc)));
+  auto csc = Csc::New(m, k_child_csc);
 
 #ifdef NVDLA_RETIMING_ENABLE
   // CMAC
-  auto cmac_ila = m.NewChild(k_child_cmac_b);
-  cmac_ila.SetValid(IsTrue(m.state(k_tag_cmac_b)));
+  auto cmac_b = Cmac::New(m, k_child_cmac_b);
+#endif
 
+#ifdef NVDLA_RETIMING_ENABLE
   // CACC
-  auto cacc_ila = m.NewChild(k_child_cacc);
-  cacc_ila.SetValid(IsTrue(m.state(k_tag_cacc)));
+  auto cacc = Cacc::New(m, k_child_cacc);
+#endif
+
+#if 0
+  // SDP
+  auto sdp = Sdp::New(m, k_child_sdp);
+  // SDP RDMA
+  auto sdp_rdma = Sdp_Rdma::New(m, k_child_sdp_rdma);
+
+  // PDP
+  auto pdp = Pdp::New(m, k_child_pdp);
+  // PDP RDMA
+  auto pdp_rdma = Pdp_Rdma::New(m, k_child_pdp_rdma);
+
+  // CDP
+  auto cdp = Cdp::New(m, k_child_cdp);
+  // CDP RDMA
+  auto cdp_rdma = Cdp_Rdma::New(m, k_child_cdp_rdma);
 #endif
 
 #ifdef NVDLA_BDMA_ENABLE
+  // BDMA
   auto bdma = Bdma::New(m, k_child_bdma);
 #endif // NVDLA_BDMA_ENABLE
 
-  // TODO other sub-units
+#ifdef NVDLA_RUBIK_ENABLE
+  // RUBIK
+  auto rubik = Rubik::New(m, k_child_rubik);
+#endif // NVDLA_RUBIK_ENABLE
+
+  return;
 }
 
 void NvDla::DefineInstr(Ila& m) {
-  /***** configuration space bus (CSB) *****/
-
   // helper functions
   auto is_csb = m.state(CSB2NVDLA_READY) & m.input(CSB2NVDLA_VALID);
   auto csb_wr = (m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE));

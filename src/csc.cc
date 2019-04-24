@@ -8,9 +8,6 @@
 
 // File Name: csc.cc
 
-#include <ilang/util/log.h>
-#include <nvdla/configs/addr_space.h>
-#include <nvdla/configs/state_info.h>
 #include <nvdla/csc.h>
 #include <nvdla/utils.h>
 
@@ -26,12 +23,14 @@ Ila Csc::New(Ila& parent, const std::string& name) {
   DefineChild(m);
   DefineInstr(m);
 
+#if 0
   // valid
   auto valid = IsTrue(m.state(k_tag_csc));
   m.SetValid(valid);
+#endif
 
   // fetch
-  auto fetch = BvConst(1, 1); // XXX
+  auto fetch = BvConst(1, 1); // FIXME
   m.SetFetch(fetch);
 
   return m;

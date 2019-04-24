@@ -8,8 +8,8 @@
 
 // File Name: nvdla_top.h
 
-#ifndef NVDLA_TOP_H__
-#define NVDLA_TOP_H__
+#ifndef ILA_NVDLA_TOP_H__
+#define ILA_NVDLA_TOP_H__
 
 #include <ilang/ilang++.h>
 #include <string>
@@ -28,30 +28,34 @@ public:
   static std::vector<ExprRef> Invariants(Ila& m);
 
 protected:
-  // signal name of the child ILA trigger
-  static const std::string k_tag_glb;
-  static const std::string k_tag_mcif;
-  static const std::string k_tag_bdma;
-  static const std::string k_tag_cdma;
-  static const std::string k_tag_cbuf;
-  static const std::string k_tag_csc;
-  static const std::string k_tag_cmac_a;
-  static const std::string k_tag_cmac_b;
-  static const std::string k_tag_cacc;
-  static const std::string k_tag_sdp_rdma;
-  static const std::string k_tag_sdp;
-  static const std::string k_tag_pdp_rdma;
-  static const std::string k_tag_pdp;
-  static const std::string k_tag_cdp_rdma;
-  static const std::string k_tag_cdp;
-  static const std::string k_tag_rubic;
+  /* internal state info
+   * name of the child ILA
+   * name of the trigger signal
+   */
 
-  static const std::string k_child_cdma;
-  static const std::string k_child_cbuf;
-  static const std::string k_child_csc;
-  static const std::string k_child_cmac_a;
-  static const std::string k_child_cmac_b;
-  static const std::string k_child_cacc;
+  // convolution pipeline (CDMA, CBUF, CSC, CMAC, and CACC)
+  static const std::string k_name_conv_pipe;
+  static const std::string k_trig_conv_pipe;
+
+  // single data processor pipeline (SDP and SDP-RDMA)
+  static const std::string k_name_sdp_pipe;
+  static const std::string k_trig_sdp_pipe;
+
+  // planar data processor pipeline (PDP and PDP-RDMA)
+  static const std::string k_name_pdp_pipe;
+  static const std::string k_trig_pdp_pipe;
+
+  // channel data processor pipeline (CDP and CDP-RDMA)
+  static const std::string k_name_cdp_pipe;
+  static const std::string k_trig_cdp_pipe;
+
+  // bridge DMA (BDMA)
+  static const std::string k_name_bdma;
+  static const std::string k_trig_bdma;
+
+  // reshape engine (RUBIK)
+  static const std::string k_name_rubik;
+  static const std::string k_trig_rubik;
 
 private:
   static void DefineInterface(Ila& m);
@@ -63,5 +67,5 @@ private:
 
 }; // namespace ilang
 
-#endif // NVDLA_TOP_H__
+#endif // ILA_NVDLA_TOP_H__
 

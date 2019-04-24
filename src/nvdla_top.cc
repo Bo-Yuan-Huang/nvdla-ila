@@ -8,55 +8,48 @@
 
 // File Name: nvdla_top.cc
 
-#include <nvdla/cbuf.h>
-#include <nvdla/cdma.h>
 #include <nvdla/configs/addr_space.h>
+#include <nvdla/configs/hw_param.h>
 #include <nvdla/configs/modeling_config.h>
 #include <nvdla/configs/state_info.h>
-#include <nvdla/csc.h>
+#include <nvdla/conv_pipe.h>
 #include <nvdla/nvdla_top.h>
 #include <nvdla/utils.h>
 
 namespace ilang {
 
 // static data member
-const std::string NvDla::k_tag_glb = "tag_glb";
-const std::string NvDla::k_tag_mcif = "tag_mcif";
-const std::string NvDla::k_tag_bdma = "tag_bdma";
-const std::string NvDla::k_tag_cbuf = "tag_cbuf";
-const std::string NvDla::k_tag_cdma = "tag_cdma";
-const std::string NvDla::k_tag_csc = "tag_csc";
-const std::string NvDla::k_tag_cmac_a = "tag_cmac_a";
-const std::string NvDla::k_tag_cmac_b = "tag_cmac_b";
-const std::string NvDla::k_tag_cacc = "tag_cacc";
-const std::string NvDla::k_tag_sdp_rdma = "tag_sdp_rdma";
-const std::string NvDla::k_tag_sdp = "tag_sdp";
-const std::string NvDla::k_tag_pdp_rdma = "tag_pdp_rdma";
-const std::string NvDla::k_tag_pdp = "tag_pdp";
-const std::string NvDla::k_tag_cdp_rdma = "tag_cdp_rdma";
-const std::string NvDla::k_tag_cdp = "tag_cdp";
-const std::string NvDla::k_tag_rubic = "tag_rubic";
+const std::string NvDla::k_name_conv_pipe = "conv_pipe";
+const std::string NvDla::k_trig_conv_pipe = "trig_conv_pipe";
 
-const std::string NvDla::k_child_cdma = "cdma";
-const std::string NvDla::k_child_cbuf = "cbuf";
-const std::string NvDla::k_child_csc = "csc";
-const std::string NvDla::k_child_cmac_a = "cmac_a";
-const std::string NvDla::k_child_cmac_b = "cmac_b";
-const std::string NvDla::k_child_cacc = "cacc";
+const std::string NvDla::k_name_sdp_pipe = "sdp_pipe";
+const std::string NvDla::k_trig_sdp_pipe = "trig_sdp_pipe";
+
+const std::string NvDla::k_name_pdp_pipe = "pdp_pipe";
+const std::string NvDla::k_trig_pdp_pipe = "trig_pdp_pipe";
+
+const std::string NvDla::k_name_cdp_pipe = "cdp_pipe";
+const std::string NvDla::k_trig_cdp_pipe = "trig_cdp_pipe";
+
+const std::string NvDla::k_name_bdma = "bdma";
+const std::string NvDla::k_trig_bdma = "trig_bdma";
+
+const std::string NvDla::k_name_rubik = "rubik";
+const std::string NvDla::k_trig_rubik = "trig_rubik";
 
 // state define methods (extern)
 void StateDefineCsb(Ila& m);
+void StateDefineDbbif(Ila& m); // XXX abstracted
 void StateDefineGlb(Ila& m);
 void StateDefineMcif(Ila& m);
-void StateDefineSramif(Ila& m);
-void StateDefineBdma(Ila& m);
+void StateDefineSramif(Ila& m); // XXX not in nv_small
 
 // state init methods (extern)
 void StateInitCsb(Ila& m);
+void StateInitDbbif(Ila& m); // XXX abstracted
 void StateInitGlb(Ila& m);
 void StateInitMcif(Ila& m);
-void StateInitSramif(Ila& m);
-void StateInitBdma(Ila& m);
+void StateInitSramif(Ila& m); // XXX not in nv_small
 
 NvDla::NvDla() {}
 
@@ -150,88 +143,73 @@ void NvDla::DefineInterface(Ila& m) {
 }
 
 void NvDla::DefineInternal(Ila& m) {
-  /* Trigger signals (tag of child-ILAs) */
+  /* Trigger signals */
 
-  auto tag_glb = NewState(m, k_tag_glb);
-  auto tag_mcif = NewState(m, k_tag_mcif);
-  auto tag_bdma = NewState(m, k_tag_bdma);
-  auto tag_cbuf = NewState(m, k_tag_cbuf);
-  auto tag_cdma = NewState(m, k_tag_cdma);
-  auto tag_csc = NewState(m, k_tag_csc);
-  auto tag_cmac_a = NewState(m, k_tag_cmac_a);
-  auto tag_cmac_b = NewState(m, k_tag_cmac_b);
-  auto tag_cacc = NewState(m, k_tag_cacc);
-  auto tag_sdp_rdma = NewState(m, k_tag_sdp_rdma);
-  auto tag_sdp = NewState(m, k_tag_sdp);
-  auto tag_pdp_rdma = NewState(m, k_tag_pdp_rdma);
-  auto tag_pdp = NewState(m, k_tag_pdp);
-  auto tag_cdp_rdma = NewState(m, k_tag_cdp_rdma);
-  auto tag_cdp = NewState(m, k_tag_cdp);
-  auto tag_rubic = NewState(m, k_tag_rubic);
+  // single data processor pipeline
+  auto trig_conv = NewState(m, k_trig_conv_pipe);
+  m.AddInit(IsFalse(trig_conv));
 
-  m.AddInit(IsFalse(tag_glb));
-  m.AddInit(IsFalse(tag_mcif));
-  m.AddInit(IsFalse(tag_bdma));
-  m.AddInit(IsFalse(tag_cbuf));
-  m.AddInit(IsFalse(tag_cdma));
-  m.AddInit(IsFalse(tag_csc));
-  m.AddInit(IsFalse(tag_cmac_a));
-  m.AddInit(IsFalse(tag_cmac_b));
-  m.AddInit(IsFalse(tag_cacc));
-  m.AddInit(IsFalse(tag_sdp_rdma));
-  m.AddInit(IsFalse(tag_sdp));
-  m.AddInit(IsFalse(tag_pdp_rdma));
-  m.AddInit(IsFalse(tag_pdp));
-  m.AddInit(IsFalse(tag_cdp_rdma));
-  m.AddInit(IsFalse(tag_cdp));
-  m.AddInit(IsFalse(tag_rubic));
-}
-
-void NvDla::DefineChild(Ila& m) {
-  // CDMA
-  auto cdma = Cdma::New(m, k_child_cdma);
-
-  // CBUF
-  auto cbuf = Cbuf::New(m, k_child_cbuf);
-
-  // CSC
-  auto csc = Csc::New(m, k_child_csc);
-
-#ifdef NVDLA_RETIMING_ENABLE
-  // CMAC
-  auto cmac_b = Cmac::New(m, k_child_cmac_b);
-#endif
-
-#ifdef NVDLA_RETIMING_ENABLE
-  // CACC
-  auto cacc = Cacc::New(m, k_child_cacc);
-#endif
-
+  // TODO not implemented yet
 #if 0
-  // SDP
-  auto sdp = Sdp::New(m, k_child_sdp);
-  // SDP RDMA
-  auto sdp_rdma = Sdp_Rdma::New(m, k_child_sdp_rdma);
+  // single data processor pipeline
+  auto trig_sdp = NewState(m, k_trig_sdp_pipe);
+  m.AddInit(IsFalse(trig_sdp));
 
-  // PDP
-  auto pdp = Pdp::New(m, k_child_pdp);
-  // PDP RDMA
-  auto pdp_rdma = Pdp_Rdma::New(m, k_child_pdp_rdma);
+  // planar data processor pipeline
+  auto trig_pdp = NewState(m, k_trig_pdp_pipe);
+  m.AddInit(IsFalse(trig_pdp));
 
-  // CDP
-  auto cdp = Cdp::New(m, k_child_cdp);
-  // CDP RDMA
-  auto cdp_rdma = Cdp_Rdma::New(m, k_child_cdp_rdma);
+  // channel data processor pipeline
+  auto trig_cdp = NewState(m, k_trig_cdp_pipe);
+  m.AddInit(IsFalse(trig_cdp));
 #endif
 
 #ifdef NVDLA_BDMA_ENABLE
   // BDMA
-  auto bdma = Bdma::New(m, k_child_bdma);
+  auto trig_bdma = NewState(m, k_trig_bdma);
+  m.AddInit(IsFalse(trig_bdma));
 #endif // NVDLA_BDMA_ENABLE
 
 #ifdef NVDLA_RUBIK_ENABLE
   // RUBIK
-  auto rubik = Rubik::New(m, k_child_rubik);
+  auto trig_rubik = NewState(m, k_trig_rubik);
+  m.AddInit(IsFalse(trig_rubik));
+#endif // NVDLA_RUBIK_ENABLE
+
+  return;
+}
+
+void NvDla::DefineChild(Ila& m) {
+
+  // convolution pipeline
+  auto conv = ConvPipe::New(m, k_name_conv_pipe);
+  conv.SetValid(IsTrue(m.state(k_trig_conv_pipe)));
+
+  // TODO not implemented yet
+#if 0
+  // single data processor pipeline
+  auto sdp = SdpPipe::New(m, k_name_sdp_pipe);
+  sdp.SetValid(IsTrue(m.state(k_trig_sdp_pipe)));
+
+  // planar data processor pipeline
+  auto pdp = PdpPipe::New(m, k_name_pdp_pipe);
+  pdp.SetValid(IsTrue(m.state(k_trig_pdp_pipe)));
+
+  // channel data processor pipeline
+  auto cdp = CdpPipe::New(m, k_name_cdp_pipe);
+  cdp.SetValid(IsTrue(m.state(k_trig_cdp_pipe)));
+#endif
+
+#ifdef NVDLA_BDMA_ENABLE
+  // BDMA
+  auto bdma = Bdma::New(m, k_name_bdma);
+  bdma.SetValid(IsTrue(m.state(k_trig_bdma)));
+#endif // NVDLA_BDMA_ENABLE
+
+#ifdef NVDLA_RUBIK_ENABLE
+  // RUBIK
+  auto rubik = Rubik::New(m, k_name_rubik);
+  rubik.SetValid(IsTrue(m.state(k_trig_rubik)));
 #endif // NVDLA_RUBIK_ENABLE
 
   return;
@@ -242,60 +220,32 @@ void NvDla::DefineInstr(Ila& m) {
   auto is_csb = m.state(CSB2NVDLA_READY) & m.input(CSB2NVDLA_VALID);
   auto csb_wr = (m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE));
   auto csb_rd = (m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_READ));
-  auto raise_tag_val = BoolVal(1);
+  auto raise_trig_val = BoolVal(1);
 
-  { // Write to CDMA CSB registers
-    auto instr = m.NewInstr("csb_wr_cdma");
+  { // Write to CDMA/CSC/CMAC/CACC CSB registers
+    auto instr = m.NewInstr("csb_wr_conv_pipe");
     auto decode = is_csb & csb_wr &
                   (m.input(CSB2NVDLA_ADDR) >= CDMA_ADDR_SPACE_START) &
-                  (m.input(CSB2NVDLA_ADDR) <= CDMA_ADDR_SPACE_END);
+                  (m.input(CSB2NVDLA_ADDR) <= CACC_ADDR_SPACE_END);
     instr.SetDecode(decode);
 
-    instr.SetProgram(m.child(k_child_cdma));
+    instr.SetProgram(m.child(k_name_conv_pipe));
 
-    auto tag_update = raise_tag_val;
-    instr.SetUpdate(m.state(k_tag_cdma), tag_update);
+    auto trig_update = raise_trig_val;
+    instr.SetUpdate(m.state(k_trig_conv_pipe), trig_update);
   }
 
-  { // Read from CDMA CSB registers
-    auto instr = m.NewInstr("csb_rd_cdma");
+  { // Read from CDMA/CSC/CMAC/CACC CSB registers
+    auto instr = m.NewInstr("csb_rd_conv_pipe");
     auto decode = is_csb & csb_rd &
                   (m.input(CSB2NVDLA_ADDR) >= CDMA_ADDR_SPACE_START) &
-                  (m.input(CSB2NVDLA_ADDR) <= CDMA_ADDR_SPACE_END);
+                  (m.input(CSB2NVDLA_ADDR) <= CACC_ADDR_SPACE_END);
     instr.SetDecode(decode);
 
-    instr.SetProgram(m.child(k_child_cdma));
+    instr.SetProgram(m.child(k_name_conv_pipe));
 
-    auto tag_update = raise_tag_val;
-    instr.SetUpdate(m.state(k_tag_cdma), tag_update);
-  }
-
-  { // Write to CSC CSB registers
-    auto instr = m.NewInstr("csb_wr_csc");
-    auto decode = is_csb & csb_wr &
-                  (m.input(CSB2NVDLA_ADDR) >= CSC_ADDR_SPACE_START) &
-                  (m.input(CSB2NVDLA_ADDR) <= CSC_ADDR_SPACE_END);
-
-    instr.SetDecode(decode);
-
-    instr.SetProgram(m.child(k_child_csc));
-
-    auto tag_update = raise_tag_val;
-    instr.SetUpdate(m.state(k_tag_csc), tag_update);
-  }
-
-  { // Read from CSC CSB registers
-    auto instr = m.NewInstr("csb_rd_csc");
-    auto decode = is_csb & csb_rd &
-                  (m.input(CSB2NVDLA_ADDR) >= CSC_ADDR_SPACE_START) &
-                  (m.input(CSB2NVDLA_ADDR) <= CSC_ADDR_SPACE_END);
-
-    instr.SetDecode(decode);
-
-    instr.SetProgram(m.child(k_child_csc));
-
-    auto tag_update = raise_tag_val;
-    instr.SetUpdate(m.state(k_tag_csc), tag_update);
+    auto trig_update = raise_trig_val;
+    instr.SetUpdate(m.state(k_trig_conv_pipe), trig_update);
   }
 }
 

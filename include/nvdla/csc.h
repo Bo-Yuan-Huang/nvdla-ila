@@ -8,16 +8,15 @@
 
 // File Name: csc.h
 
-#ifndef CSC_ILA_H__
-#define CSC_ILA_H__
+#ifndef ILA_CSC_H__
+#define ILA_CSC_H__
 
-#include <ilang/ilang++.h>
-#include <nvdla/nvdla_top.h>
+#include <nvdla/conv_pipe.h>
 
 // namespace ilang
 namespace ilang {
 
-class Csc : protected NvDla {
+class Csc : protected ConvPipe {
 public:
   Csc();
   ~Csc();
@@ -37,5 +36,5 @@ private:
 
 }; // namespace ilang
 
-#endif // CSC_ILA_H__
+#endif // ILA_CSC_H__
 

@@ -8,10 +8,7 @@
 
 // File Name: cdma.cc
 
-#include <ilang/util/log.h>
 #include <nvdla/cdma.h>
-#include <nvdla/configs/addr_space.h>
-#include <nvdla/configs/state_info.h>
 #include <nvdla/utils.h>
 
 namespace ilang {
@@ -26,12 +23,14 @@ Ila Cdma::New(Ila& parent, const std::string& name) {
   DefineChild(m);
   DefineInstr(m);
 
+#if 1
   // valid
-  auto valid = IsTrue(m.state(k_tag_cdma));
+  auto valid = IsTrue(m.state(k_trig_cdma));
   m.SetValid(valid);
+#endif
 
   // fetch
-  auto fetch = BvConst(1, 1); // XXX
+  auto fetch = BvConst(1, 1); // FIXME
   m.SetFetch(fetch);
 
   return m;

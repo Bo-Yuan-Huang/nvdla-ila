@@ -8,16 +8,15 @@
 
 // File Name: cdma.h
 
-#ifndef CDMA_ILA_H__
-#define CDMA_ILA_H__
+#ifndef ILA_CDMA_H__
+#define ILA_CDMA_H__
 
-#include <ilang/ilang++.h>
-#include <nvdla/nvdla_top.h>
+#include <nvdla/conv_pipe.h>
 
 /// \namespace ilang
 namespace ilang {
 
-class Cdma : protected NvDla {
+class Cdma : protected ConvPipe {
 public:
   Cdma();
   ~Cdma();
@@ -37,5 +36,5 @@ private:
 
 }; // namespace ilang
 
-#endif // CDMA_ILA_H__
+#endif // ILA_CDMA_H__
 

@@ -29,9 +29,8 @@ find_package(ilang REQUIRED)
 # ---------------------------------------------------------------------------- #
 add_executable(${MyTarget} 
   app/main.cc
-  #src/cdma.cc
+
   src/conv_pipe.cc
-  #src/csc.cc
   src/nvdla_top.cc
   src/utils.cc
 
@@ -53,9 +52,23 @@ add_executable(${MyTarget}
   src/state_define/state_define_sdp_rdma.cc
   src/state_define/state_define_sramif.cc
 
+  src/state_init/state_init_bdma.cc
+  src/state_init/state_init_cacc.cc
+  src/state_init/state_init_cdma.cc
+  src/state_init/state_init_cdp.cc
+  src/state_init/state_init_cdp_rdma.cc
+  src/state_init/state_init_cmac_a.cc
+  src/state_init/state_init_cmac_b.cc
   src/state_init/state_init_csb.cc
+  src/state_init/state_init_csc.cc
   src/state_init/state_init_glb.cc
   src/state_init/state_init_mcif.cc
+  src/state_init/state_init_pdp.cc
+  src/state_init/state_init_pdp_rdma.cc
+  src/state_init/state_init_rubik.cc
+  src/state_init/state_init_sdp.cc
+  src/state_init/state_init_sdp_rdma.cc
+  src/state_init/state_init_sramif.cc
 )
 
 target_include_directories(${MyTarget} PRIVATE include)

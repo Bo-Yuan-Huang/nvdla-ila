@@ -6,7 +6,7 @@
 // Check "LICENSE" which comes with this distribution for more information.
 // ============================================================================
 
-// File Name: state_init_glb.cc
+// File Name: state_init_cmac_a.cc
 
 #include <ilang/ilang++.h>
 #include <nvdla/configs/state_info.h>
@@ -17,18 +17,18 @@ namespace ilang {
 
 // FIXME this is auto-generated placeholder
 
-void StateInitGlb(Ila& m) {
-  // HW version of NVDLA
-  m.AddInit(m.state(GLB_HW_VERSION) == 0);
+void StateInitCmac_A(Ila& m) {
+  // Idle status of two register groups
+  m.AddInit(m.state(CMAC_A_S_STATUS) == 0);
 
-  // Interrupt mask control
-  m.AddInit(m.state(GLB_INTR_MASK) == 0);
+  // Pointer for CSB master and data path to access groups
+  m.AddInit(m.state(CMAC_A_S_POINTER) == 0);
 
-  // Interrupt set control
-  m.AddInit(m.state(GLB_INTR_SET) == 0);
+  // Set it to 1 to kick off operation for current register group
+  m.AddInit(m.state(CMAC_A_D_OP_ENABLE) == 0);
 
-  // Interrupt status
-  m.AddInit(m.state(GLB_INTR_STATUS) == 0);
+  // Configuration of operation: convolution mode, precision, etc.
+  m.AddInit(m.state(CMAC_A_D_MISC_CFG) == 0);
 
   return;
 }

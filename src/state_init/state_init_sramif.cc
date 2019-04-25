@@ -6,7 +6,7 @@
 // Check "LICENSE" which comes with this distribution for more information.
 // ============================================================================
 
-// File Name: state_init_mcif.cc
+// File Name: state_init_sramif.cc
 
 #include <ilang/ilang++.h>
 #include <nvdla/configs/state_info.h>
@@ -17,27 +17,27 @@ namespace ilang {
 
 // FIXME this is auto-generated placeholder
 
-void StateInitMcif(Ila& m) {
+void StateInitSramif(Ila& m) {
   // Register0 to control the read weight of clients in MCIF
-  m.AddInit(m.state(MCIF_CFG_RD_WEIGHT_0) == 0);
+  m.AddInit(m.state(SRAMIF_CFG_RD_WEIGHT_0) == 0);
 
   // Register1 to control the read weight of clients in MCIF
-  m.AddInit(m.state(MCIF_CFG_RD_WEIGHT_1) == 0);
+  m.AddInit(m.state(SRAMIF_CFG_RD_WEIGHT_1) == 0);
 
   // Register2 to control the read weight of clients in MCIF
-  m.AddInit(m.state(MCIF_CFG_RD_WEIGHT_2) == 0);
+  m.AddInit(m.state(SRAMIF_CFG_RD_WEIGHT_2) == 0);
 
   // Register0 to control the write weight of clients in MCIF
-  m.AddInit(m.state(MCIF_CFG_WR_WEIGHT_0) == 0);
+  m.AddInit(m.state(SRAMIF_CFG_WR_WEIGHT_0) == 0);
 
   // Register1 to control the write weight of clients in MCIF
-  m.AddInit(m.state(MCIF_CFG_WR_WEIGHT_1) == 0);
+  m.AddInit(m.state(SRAMIF_CFG_WR_WEIGHT_1) == 0);
 
   // Outstanding AXI transactions in unit of 64Byte
-  m.AddInit(m.state(MCIF_CFG_OUTSTANDING_CNT) == 0);
+  m.AddInit(m.state(SRAMIF_CFG_OUTSTANDING_CNT) == 0);
 
-  // Idle status of MCIF
-  m.AddInit(m.state(MCIF_STATUS) == 0);
+  // Idle status of SRAMIF
+  m.AddInit(m.state(SRAMIF_STATUS) == 0);
 
   return;
 }

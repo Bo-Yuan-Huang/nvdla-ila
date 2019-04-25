@@ -18,17 +18,16 @@ namespace ilang {
 
 // static data member
 
-const std::string ConvPipe::k_name_cdma = "cdma";
-const std::string ConvPipe::k_trig_cdma = "trig_cdma";
+// extern member
+void StateDefineCdma(Ila& m);
+void StateDefineCsc(Ila& m);
+void StateDefineCmac_b(Ila& m);
+void StateDefineCacc(Ila& m);
 
-const std::string ConvPipe::k_name_csc = "csc";
-const std::string ConvPipe::k_trig_csc = "trig_csc";
-
-const std::string ConvPipe::k_name_cmac = "cmac";
-const std::string ConvPipe::k_trig_cmac = "trig_cmac";
-
-const std::string ConvPipe::k_name_cacc = "cacc";
-const std::string ConvPipe::k_trig_cacc = "trig_cacc";
+void StateInitCdma(Ila& m);
+void StateInitCsc(Ila& m);
+void StateInitCmac_b(Ila& m);
+void StateInitCacc(Ila& m);
 
 Ila ConvPipe::New(Ila& parent, const std::string& name) {
   auto m = parent.NewChild(name);
@@ -65,43 +64,39 @@ void ConvPipe::GetStateInvariant(const Ila& m, ExprVec& invr) {
 }
 
 void ConvPipe::SetArchStateVar(Ila& m) {
-  //
+  // CDMA
+  StateDefineCdma(m);
+  StateInitCdma(m);
+
+  // CBUF
+  // no MMIO addressible registers
+
+  // CSC
+  StateDefineCsc(m);
+  StateInitCsc(m);
+
+#ifdef NVDLA_RETIMING_ENABLE
+  // CMAC
+  StateDefineCmac(m);
+  StateInitCmac(m);
+
+  // CACC
+  StateDefineCacc(m);
+  StateInitCacc(m);
+
+#endif // NVDLA_RETIMING_ENABLE
+
   return;
 }
 
 void ConvPipe::SetImplStateVar(Ila& m) {
-  // CDMA
-  // auto trig_cdma = NewState(m, k_trig_cdma);
-  // m.AddInit(IsFalse(trig_cdma));
-
-  // CSC
-  // auto trig_csc = NewState(m, k_trig_csc);
-  // m.AddInit(IsFalse(trig_csc));
-
-#ifdef NVDLA_RETIMING_ENABLE
-  // CMAC
-
-  // CACC
-
-#endif // NVDLA_RETIMING_ENABLE
+  // CBUF
 
   return;
 }
 
 void ConvPipe::SetChild(Ila& m) {
-  // CDMA
-  // auto cdma = Cdma::New(m, k_name_cdma);
-  // cdma.SetValid(IsTrue(m.state(k_trig_cdma)));
-
-  // CSC
-  // auto csc = Csc::New(m, k_name_csc);
-  // csc.SetValid(IsTrue(m.state(k_trig_csc)));
-
-#ifdef NVDLA_RETIMING_ENABLE
-  // CMAC
-  // CACC
-#endif // NVDLA_RETIMING_ENABLE
-
+  //
   return;
 }
 

@@ -34,30 +34,7 @@ public:
   static void GetStateInvariant(const Ila& top, ExprVec& invr);
 
 protected:
-  /* internal state info
-   * name of the child ila
-   * name of the trigger signal
-   */
-
-  // CDMA
-  static const std::string k_name_cdma;
-  static const std::string k_trig_cdma;
-
-  // CBUF
-  static const std::string k_name_cbuf;
-  static const std::string k_trig_cbuf;
-
-  // CSC
-  static const std::string k_name_csc;
-  static const std::string k_trig_csc;
-
-  // CMAC
-  static const std::string k_name_cmac;
-  static const std::string k_trig_cmac;
-
-  // CACC
-  static const std::string k_name_cacc;
-  static const std::string k_trig_cacc;
+  //
 
 private:
   // set architectural state variable (spec./doc.)
@@ -74,4 +51,3 @@ private:
 }; // namespace ilang
 
 #endif // ILA_CONV_PIPE_H__
-

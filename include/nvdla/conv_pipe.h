@@ -24,6 +24,9 @@ public:
 
   static Ila New(Ila& parent, const std::string& name = "conv_pipe");
 
+  static void GetInputAssumption(const Ila& top, ExprVec& assm);
+  static void GetStateInvariant(const Ila& top, ExprVec& invr);
+
 protected:
   /* internal state info
    * name of the child ila
@@ -51,10 +54,10 @@ protected:
   static const std::string k_trig_cacc;
 
 private:
-  static void DefineInterface(Ila& m);
-  static void DefineInternal(Ila& m);
-  static void DefineChild(Ila& m);
-  static void DefineInstr(Ila& m);
+  static void SetArchStateVar(Ila& m);
+  static void SetImplStateVar(Ila& m);
+  static void SetChild(Ila& m);
+  static void SetInstr(Ila& m);
 
 }; // class ConvPipe
 

@@ -20,8 +20,11 @@ int main() {
   auto nvdla = NvDla::New();
   ExportIlaPortable(nvdla, "nvdla.json");
 
-  auto assumptions = NvDla::Assumptions(nvdla);
-  auto invariants = NvDla::Invariants(nvdla);
+  auto assm = std::vector<ilang::ExprRef>();
+  NvDla::GetInputAssumption(nvdla, assm);
+
+  auto invr = std::vector<ilang::ExprRef>();
+  NvDla::GetStateInvariant(nvdla, invr);
 
   return 0;
 }

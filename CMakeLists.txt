@@ -29,9 +29,9 @@ find_package(ilang REQUIRED)
 # ---------------------------------------------------------------------------- #
 add_executable(${MyTarget} 
   app/main.cc
-  src/cdma.cc
+  #src/cdma.cc
   src/conv_pipe.cc
-  src/csc.cc
+  #src/csc.cc
   src/nvdla_top.cc
   src/utils.cc
 

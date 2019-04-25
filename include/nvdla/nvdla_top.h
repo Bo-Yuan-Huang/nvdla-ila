@@ -12,25 +12,33 @@
 #define ILA_NVDLA_TOP_H__
 
 #include <ilang/ilang++.h>
-#include <string>
-#include <vector>
 
-/// \namespace ilang
+// namespace ilang
 namespace ilang {
 
+// Top level model of NVDLA
 class NvDla {
 public:
+  // vector of expr
+  typedef std::vector<ExprRef> ExprVec;
+
+  // default constructor
   NvDla();
+  // default destructor
   ~NvDla();
 
+  // return a new ILA with the given name
   static Ila New(const std::string& name = "nvdla_top");
-  static std::vector<ExprRef> Assumptions(Ila& m);
-  static std::vector<ExprRef> Invariants(Ila& m);
+
+  // return all input assumptions
+  static void GetInputAssumption(const Ila& top, ExprVec& assm);
+  // return all invariants over state variables
+  static void GetStateInvariant(const Ila& top, ExprVec& invr);
 
 protected:
   /* internal state info
-   * name of the child ILA
-   * name of the trigger signal
+   * - name of the child ILA
+   * - name of the trigger signal
    */
 
   // convolution pipeline (CDMA, CBUF, CSC, CMAC, and CACC)
@@ -58,14 +66,22 @@ protected:
   static const std::string k_trig_rubik;
 
 private:
-  static void DefineInterface(Ila& m);
-  static void DefineInternal(Ila& m);
-  static void DefineChild(Ila& m);
-  static void DefineInstr(Ila& m);
+  // set architectural state variable (spec./doc.)
+  static void SetArchStateVar(Ila& m);
+  // set implementation state variable (internal)
+  static void SetImplStateVar(Ila& m);
+  // set child ila
+  static void SetChild(Ila& m);
+  // set instruction
+  static void SetInstr(Ila& m);
+
+  // input assumptions (no hierarchy)
+  static void InputAssume(const Ila& m, ExprVec& assm);
+  // state invariant (no hierarchy)
+  static void StateInvariant(const Ila& m, ExprVec& invr);
 
 }; // class NvDla
 
 }; // namespace ilang
 
 #endif // ILA_NVDLA_TOP_H__
-

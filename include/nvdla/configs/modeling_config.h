@@ -19,6 +19,9 @@ namespace ilang {
 // model AXI protocol
 //#define MODEL_AXI_DETAIL
 
+// work in progress comment
+#define MODEL_SKIP_TODO
+
 }; // namespace ilang
 
 #endif // MODELING_CONFIG_H__

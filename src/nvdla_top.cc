@@ -8,7 +8,6 @@
 
 // File Name: nvdla_top.cc
 
-#include <nvdla/configs/addr_space.h>
 #include <nvdla/configs/hw_param.h>
 #include <nvdla/configs/modeling_config.h>
 #include <nvdla/configs/state_info.h>
@@ -39,17 +38,17 @@ const std::string NvDla::k_trig_rubik = "trig_rubik";
 
 // state define methods (extern)
 void StateDefineCsb(Ila& m);
-void StateDefineDbbif(Ila& m); // XXX abstracted
+void StateDefineDbbif(Ila& m); // abstracted
 void StateDefineGlb(Ila& m);
 void StateDefineMcif(Ila& m);
-void StateDefineSramif(Ila& m); // XXX not in nv_small
+void StateDefineSramif(Ila& m); // not in nv_small
 
 // state init methods (extern)
 void StateInitCsb(Ila& m);
-void StateInitDbbif(Ila& m); // XXX abstracted
+void StateInitDbbif(Ila& m); // abstracted
 void StateInitGlb(Ila& m);
 void StateInitMcif(Ila& m);
-void StateInitSramif(Ila& m); // XXX not in nv_small
+void StateInitSramif(Ila& m); // not in nv_small
 
 NvDla::NvDla() {}
 
@@ -58,63 +57,93 @@ NvDla::~NvDla() {}
 Ila NvDla::New(const std::string& name) {
   auto m = Ila(name);
 
-  DefineInterface(m);
-  DefineInternal(m);
-  DefineChild(m);
-  DefineInstr(m);
+  // state vars
+  SetArchStateVar(m);
+  SetImplStateVar(m);
+
+  // model hierarchy
+  SetChild(m);
+
+  // instruction decode & updates
+  SetInstr(m);
 
   // valid
-  m.SetValid(BoolVal(1)); // FIXME
+  auto has_csb_cmd = m.state(CSB2NVDLA_READY) & m.input(CSB2NVDLA_VALID);
+  m.SetValid(IsTrue(has_csb_cmd));
 
   // fetch
-  m.SetFetch(BvConst(1, 1)); // FIXME
+  auto csb_cmd = Concat(m.input(CSB2NVDLA_ADDR), m.input(CSB2NVDLA_WRITE));
+  m.SetFetch(csb_cmd);
 
   return m;
 }
 
-std::vector<ExprRef> NvDla::Assumptions(Ila& m) {
-  auto assumptions = std::vector<ExprRef>();
+void NvDla::GetInputAssumption(const Ila& m, ExprVec& assm) {
+  // Top level assumptions
+  InputAssume(m, assm);
 
-  { // CSB request channel vs. read response
-    // no (immediate) request at time of previous read response
-    auto imm = m.input(CSB2NVDLA_VALID) & m.state(NVDLA2CSB_VALID);
-    auto no_imm_rd = IsFalse(imm);
-    assumptions.push_back(no_imm_rd);
-  }
+  // assumptions from child ILAs
 
-  { // CSB request channel vs. read response
-    // no (immediate) request at time of previous write response
-    auto imm = m.input(CSB2NVDLA_VALID) & m.state(NVDLA2CSB_WR_COMPLETE);
-    auto no_imm_wr = IsFalse(imm);
-    assumptions.push_back(no_imm_wr);
-  }
+  // convolution pipeline
+  ConvPipe::GetInputAssumption(m.child(k_name_conv_pipe), assm);
 
-  return assumptions;
-}
+#ifndef MODEL_SKIP_TODO
+  // sdp pipeline
+  SdpPipe::GetInputAssumption(m.child(k_name_sdp_pipe), assm);
 
-std::vector<ExprRef> NvDla::Invariants(Ila& m) {
-  auto invariants = std::vector<ExprRef>();
+  // pdp pipeline
+  PdpPipe::GetInputAssumption(m.child(k_name_pdp_pipe), assm);
 
-#if 0
-  { // CSB request channel vs. read response
-    // not allow (immediate) request at time of previous read response
-    auto imm = m.state(CSB2NVDLA_READY) & m.state(NVDLA2CSB_VALID);
-    auto not_allow_imm_rd = IsFalse(imm);
-    invariants.push_back(not_allow_imm_rd);
-  }
-
-  { // CSB request channel vs. write response
-    // not allow (immediate) request at time of previous write response
-    auto imm = m.state(CSB2NVDLA_READY) & m.state(NVDLA2CSB_WR_COMPLETE);
-    auto not_allow_imm_wr = IsFalse(imm);
-    invariants.push_back(not_allow_imm_wr);
-  }
+  // cdp pipeline
+  CdpPipe::GetInputAssumption(m.child(k_name_cdp_pipe), assm);
 #endif
 
-  return invariants;
+#ifdef NVDLA_BDMA_ENABLE
+  // bdma
+  Bdma::GetInputAssumption(m.child(k_name_bdma), assm);
+#endif // NVDLA_BDMA_ENABLE
+
+#ifdef NVDLA_RUBIK_ENABLE
+  // rubik
+  Rubik::GetInputAssumption(m.child(k_name_rubik), assm);
+#endif
+
+  return;
 }
 
-void NvDla::DefineInterface(Ila& m) {
+void NvDla::GetStateInvariant(const Ila& m, ExprVec& invr) {
+  // Top level invariant
+  StateInvariant(m, invr);
+
+  // invariants from child ILAs
+
+  // convolution pipeline
+  ConvPipe::GetStateInvariant(m.child(k_name_conv_pipe), invr);
+
+#ifndef MODEL_SKIP_TODO
+  // sdp pipeline
+  SdpPipe::GetStateInvariant(m.child(k_name_sdp_pipe), invr);
+
+  // pdp pipeline
+  PdpPipe::GetStateInvariant(m.child(k_name_pdp_pipe), invr);
+
+  // cdp pipeline
+  CdpPipe::GetStateInvariant(m.child(k_name_cdp_pipe), invr);
+#endif
+
+#ifdef NVDLA_BDMA_ENABLE
+  // bdma
+  Bdma::GetStateInvariant(m.child(k_name_bdma), invr);
+#endif // NVDLA_BDMA_ENABLE
+
+#ifdef NVDLA_RUBIK_ENABLE
+  Rubik::GetStateInvariant(m.child(k_name_rubik), invr);
+#endif // NVDLA_RUBIK_ENABLE
+
+  return;
+}
+
+void NvDla::SetArchStateVar(Ila& m) {
   // CSB
   StateDefineCsb(m);
   StateInitCsb(m);
@@ -142,15 +171,19 @@ void NvDla::DefineInterface(Ila& m) {
   return;
 }
 
-void NvDla::DefineInternal(Ila& m) {
-  /* Trigger signals */
+void NvDla::SetImplStateVar(Ila& m) {
+  /* interface to the child ilas (triggering signals)
+   * - Boolean flag to trigger the child ila
+   * - 1 (true) if there is a command
+   * - 0 (false) otherwise
+   * - used as the valid function of the child ila
+   */
 
-  // single data processor pipeline
+  // convolution pipeline
   auto trig_conv = NewState(m, k_trig_conv_pipe);
   m.AddInit(IsFalse(trig_conv));
 
-  // TODO not implemented yet
-#if 0
+#ifndef MODEL_SKIP_TODO
   // single data processor pipeline
   auto trig_sdp = NewState(m, k_trig_sdp_pipe);
   m.AddInit(IsFalse(trig_sdp));
@@ -179,43 +212,35 @@ void NvDla::DefineInternal(Ila& m) {
   return;
 }
 
-void NvDla::DefineChild(Ila& m) {
-
+void NvDla::SetChild(Ila& m) {
   // convolution pipeline
-  auto conv = ConvPipe::New(m, k_name_conv_pipe);
-  conv.SetValid(IsTrue(m.state(k_trig_conv_pipe)));
+  ConvPipe::New(m, k_name_conv_pipe);
 
-  // TODO not implemented yet
-#if 0
+#ifndef MODEL_SKIP_TODO
   // single data processor pipeline
-  auto sdp = SdpPipe::New(m, k_name_sdp_pipe);
-  sdp.SetValid(IsTrue(m.state(k_trig_sdp_pipe)));
+  SdpPipe::New(m, k_name_sdp_pipe);
 
   // planar data processor pipeline
-  auto pdp = PdpPipe::New(m, k_name_pdp_pipe);
-  pdp.SetValid(IsTrue(m.state(k_trig_pdp_pipe)));
+  PdpPipe::New(m, k_name_pdp_pipe);
 
   // channel data processor pipeline
-  auto cdp = CdpPipe::New(m, k_name_cdp_pipe);
-  cdp.SetValid(IsTrue(m.state(k_trig_cdp_pipe)));
+  CdpPipe::New(m, k_name_cdp_pipe);
 #endif
 
 #ifdef NVDLA_BDMA_ENABLE
   // BDMA
-  auto bdma = Bdma::New(m, k_name_bdma);
-  bdma.SetValid(IsTrue(m.state(k_trig_bdma)));
+  Bdma::New(m, k_name_bdma);
 #endif // NVDLA_BDMA_ENABLE
 
 #ifdef NVDLA_RUBIK_ENABLE
   // RUBIK
-  auto rubik = Rubik::New(m, k_name_rubik);
-  rubik.SetValid(IsTrue(m.state(k_trig_rubik)));
+  Rubik::New(m, k_name_rubik);
 #endif // NVDLA_RUBIK_ENABLE
 
   return;
 }
 
-void NvDla::DefineInstr(Ila& m) {
+void NvDla::SetInstr(Ila& m) {
   // helper functions
   auto is_csb = m.state(CSB2NVDLA_READY) & m.input(CSB2NVDLA_VALID);
   auto csb_wr = (m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE));
@@ -247,6 +272,42 @@ void NvDla::DefineInstr(Ila& m) {
     auto trig_update = raise_trig_val;
     instr.SetUpdate(m.state(k_trig_conv_pipe), trig_update);
   }
+}
+
+void NvDla::InputAssume(const Ila& m, ExprVec& assm) {
+  { // CSB request channel vs. read response
+    // no (immediate) request at time of previous read response
+    auto imm = m.input(CSB2NVDLA_VALID) & m.state(NVDLA2CSB_VALID);
+    auto no_imm_rd = IsFalse(imm);
+    assm.push_back(no_imm_rd);
+  }
+
+  { // CSB request channel vs. read response
+    // no (immediate) request at time of previous write response
+    auto imm = m.input(CSB2NVDLA_VALID) & m.state(NVDLA2CSB_WR_COMPLETE);
+    auto no_imm_wr = IsFalse(imm);
+    assm.push_back(no_imm_wr);
+  }
+
+  return;
+}
+
+void NvDla::StateInvariant(const Ila& m, ExprVec& invr) {
+  { // CSB request channel vs. read response
+    // not allow (immediate) request at time of previous read response
+    auto imm = m.state(CSB2NVDLA_READY) & m.state(NVDLA2CSB_VALID);
+    auto not_allow_imm_rd = IsFalse(imm);
+    invr.push_back(not_allow_imm_rd);
+  }
+
+  { // CSB request channel vs. write response
+    // not allow (immediate) request at time of previous write response
+    auto imm = m.state(CSB2NVDLA_READY) & m.state(NVDLA2CSB_WR_COMPLETE);
+    auto not_allow_imm_wr = IsFalse(imm);
+    invr.push_back(not_allow_imm_wr);
+  }
+
+  return;
 }
 
 }; // namespace ilang

@@ -8,10 +8,9 @@
 
 // File Name: conv_pipe.cc
 
-#include <nvdla/cdma.h>
 #include <nvdla/configs/hw_param.h>
+#include <nvdla/configs/state_info.h>
 #include <nvdla/conv_pipe.h>
-#include <nvdla/csc.h>
 #include <nvdla/utils.h>
 
 // namespace ilang
@@ -34,9 +33,14 @@ const std::string ConvPipe::k_trig_cacc = "trig_cacc";
 Ila ConvPipe::New(Ila& parent, const std::string& name) {
   auto m = parent.NewChild(name);
 
+  // state var
   SetArchStateVar(m);
   SetImplStateVar(m);
+
+  // model hierarchy
   SetChild(m);
+
+  // instructions
   SetInstr(m);
 
   // valid
@@ -44,7 +48,7 @@ Ila ConvPipe::New(Ila& parent, const std::string& name) {
   m.SetValid(valid);
 
   // fetch
-  auto fetch = BvConst(1, 1); // FIXME
+  auto fetch = m.input(CSB2NVDLA_ADDR);
   m.SetFetch(fetch);
 
   return m;

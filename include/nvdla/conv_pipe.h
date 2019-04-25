@@ -16,15 +16,21 @@
 // namespace ilang
 namespace ilang {
 
+// convolution pipeline
 class ConvPipe : protected NvDla {
 
 public:
+  // default constructor
   ConvPipe();
+  // default destructor
   ~ConvPipe();
 
+  // return a new ILA with the given name
   static Ila New(Ila& parent, const std::string& name = "conv_pipe");
 
+  // return all input assumptions
   static void GetInputAssumption(const Ila& top, ExprVec& assm);
+  // return all state invariant
   static void GetStateInvariant(const Ila& top, ExprVec& invr);
 
 protected:
@@ -54,9 +60,13 @@ protected:
   static const std::string k_trig_cacc;
 
 private:
+  // set architectural state variable (spec./doc.)
   static void SetArchStateVar(Ila& m);
+  // set implementation state variable (internal)
   static void SetImplStateVar(Ila& m);
+  // set child ilas
   static void SetChild(Ila& m);
+  // set instructions
   static void SetInstr(Ila& m);
 
 }; // class ConvPipe

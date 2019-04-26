@@ -21,12 +21,12 @@ namespace ilang {
 // extern member
 void StateDefineCdma(Ila& m);
 void StateDefineCsc(Ila& m);
-void StateDefineCmac_b(Ila& m);
+void StateDefineCmac_B(Ila& m);
 void StateDefineCacc(Ila& m);
 
 void StateInitCdma(Ila& m);
 void StateInitCsc(Ila& m);
-void StateInitCmac_b(Ila& m);
+void StateInitCmac_B(Ila& m);
 void StateInitCacc(Ila& m);
 
 Ila ConvPipe::New(Ila& parent, const std::string& name) {
@@ -75,16 +75,13 @@ void ConvPipe::SetArchStateVar(Ila& m) {
   StateDefineCsc(m);
   StateInitCsc(m);
 
-#ifdef NVDLA_RETIMING_ENABLE
   // CMAC
-  StateDefineCmac(m);
-  StateInitCmac(m);
+  StateDefineCmac_B(m);
+  StateInitCmac_B(m);
 
   // CACC
   StateDefineCacc(m);
   StateInitCacc(m);
-
-#endif // NVDLA_RETIMING_ENABLE
 
   return;
 }

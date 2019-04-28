@@ -114,7 +114,8 @@ void ConvPipe::SetChild(Ila& m) {
 void ConvPipe::SetInstr(Ila& m) {
   // CSB write (no side effect)
   // CDMA
-  DefineCsbWrInstr(m, CDMA_D_MISC_CFG, CDMA_D_MISC_CFG_ADDR);
+  // DefineCsbWrInstr(m, CDMA_D_MISC_CFG, CDMA_D_MISC_CFG_ADDR);
+  AddCsbWrInstrCdma(m, CDMA_D_MISC_CFG, CDMA_D_MISC_CFG_ADDR);
 
   // CSC
 
@@ -125,6 +126,29 @@ void ConvPipe::SetInstr(Ila& m) {
   return;
 }
 
+void ConvPipe::AddCsbWrInstrCdma(Ila& m, const std::string& state_name,
+                                 const int& mmio_addr) {
+  auto instr_name = CsbWrInstrName(state_name);
+  auto instr = m.NewInstr(instr_name);
+
+  // decode
+  auto is_wr = m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE);
+  // TODO decode may depend on enable/status?
+  auto decode = (is_wr & m.input(CSB2NVDLA_ADDR) == mmio_addr);
+  instr.SetDecode(decode);
+
+  // ping-pong
+  DefinePPSM(m, state_name);
+
+  return;
+}
+
+void ConvPipe::DefinePPSM(Ila& m, const std::string& state_name) {
+  // TODO
+  return;
+}
+
+#if 0
 void ConvPipe::DefineCsbWrInstr(Ila& m, const std::string& state_name,
                                 const int& mmio_addr) {
   auto instr_name = CsbWrInstrName(state_name);
@@ -139,6 +163,7 @@ void ConvPipe::DefineCsbWrInstr(Ila& m, const std::string& state_name,
 
   return;
 }
+#endif
 
 }; // namespace ilang
 

@@ -22,6 +22,9 @@ namespace ilang {
 // work in progress comment
 #define MODEL_SKIP_TODO
 
+// bit-width of pointer type
+#define MODEL_PTR_BWID 16
+
 }; // namespace ilang
 
 #endif // MODELING_CONFIG_H__

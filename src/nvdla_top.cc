@@ -143,6 +143,11 @@ void NvDla::GetStateInvariant(const Ila& m, ExprVec& invr) {
   return;
 }
 
+std::string NvDla::CsbWrInstrName(const std::string& state_name) {
+  auto instr_name = "wr_csb_reg_" + state_name;
+  return instr_name;
+}
+
 void NvDla::SetArchStateVar(Ila& m) {
   // CSB
   StateDefineCsb(m);

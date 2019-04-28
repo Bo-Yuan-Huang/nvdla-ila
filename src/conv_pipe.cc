@@ -8,7 +8,9 @@
 
 // File Name: conv_pipe.cc
 
+#include <ilang/util/log.h>
 #include <nvdla/configs/hw_param.h>
+#include <nvdla/configs/modeling_config.h>
 #include <nvdla/configs/state_info.h>
 #include <nvdla/conv_pipe.h>
 #include <nvdla/utils.h>
@@ -63,6 +65,13 @@ void ConvPipe::GetStateInvariant(const Ila& m, ExprVec& invr) {
   return;
 }
 
+std::string ConvPipe::CbufBankName(const int& idx) {
+  ILA_ASSERT((idx >= 0) && (idx < NVDLA_CBUF_BANK_NUMBER))
+      << "Invalid cbuf idx " << idx;
+  auto name = "cbuf_bank_" + std::to_string(idx);
+  return name;
+}
+
 void ConvPipe::SetArchStateVar(Ila& m) {
   // CDMA
   StateDefineCdma(m);
@@ -88,6 +97,11 @@ void ConvPipe::SetArchStateVar(Ila& m) {
 
 void ConvPipe::SetImplStateVar(Ila& m) {
   // CBUF
+  for (auto i = 0; i < NVDLA_CBUF_BANK_NUMBER; i++) {
+    auto bank_i =
+        m.NewMemState(CbufBankName(i), MODEL_PTR_BWID, NVDLA_CBUF_BANK_WIDTH);
+    bank_i.SetEntryNum(NVDLA_CBUF_BANK_DEPTH);
+  }
 
   return;
 }
@@ -98,7 +112,31 @@ void ConvPipe::SetChild(Ila& m) {
 }
 
 void ConvPipe::SetInstr(Ila& m) {
-  //
+  // CSB write (no side effect)
+  // CDMA
+  DefineCsbWrInstr(m, CDMA_D_MISC_CFG, CDMA_D_MISC_CFG_ADDR);
+
+  // CSC
+
+  // CMAC
+
+  // CACC
+
+  return;
+}
+
+void ConvPipe::DefineCsbWrInstr(Ila& m, const std::string& state_name,
+                                const int& mmio_addr) {
+  auto instr_name = CsbWrInstrName(state_name);
+  auto instr = m.NewInstr(instr_name);
+
+  // decode
+  auto is_wr = m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE);
+  auto decode = (is_wr & m.input(CSB2NVDLA_ADDR) == mmio_addr);
+  instr.SetDecode(decode);
+
+  // ping-pong
+
   return;
 }
 

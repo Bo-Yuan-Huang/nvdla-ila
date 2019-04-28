@@ -35,6 +35,9 @@ public:
   // return all invariants over state variables
   static void GetStateInvariant(const Ila& top, ExprVec& invr);
 
+  // return the instruction name of writing to the CSB reg.
+  static std::string CsbWrInstrName(const std::string& state_name);
+
 protected:
   /* internal state info
    * - name of the child ILA

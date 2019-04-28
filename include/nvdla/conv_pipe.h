@@ -33,6 +33,9 @@ public:
   // return all state invariant
   static void GetStateInvariant(const Ila& top, ExprVec& invr);
 
+  // return the name of the i-th CBUF bank
+  static std::string CbufBankName(const int& i);
+
 protected:
   //
 
@@ -45,6 +48,10 @@ private:
   static void SetChild(Ila& m);
   // set instructions
   static void SetInstr(Ila& m);
+
+  // define instruction of writing a csb register (no side-effect)
+  static void DefineCsbWrInstr(Ila& m, const std::string& state_name,
+                               const int& mmio_addr);
 
 }; // class ConvPipe
 

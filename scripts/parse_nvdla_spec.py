@@ -38,6 +38,15 @@ def ParseNvDlaSpec(in_file):
 
     return result
 
+def RegGroupRaw(name, group_id):
+    return '{0}_g{1}'.format(name, group_id)
+
+def RegGroupMacro(name, group_id):
+    return RegGroupRaw(name, group_id).upper()
+
+def RegGroupStr(name, group_id):
+    return RegGroupRaw(name, group_id).lower()
+
 def FormatSpecFileName(file_prefix, tag):
     file_name = '{0}_{1}.txt'.format(file_prefix.lower(), tag.lower())
     return file_name

@@ -20,11 +20,21 @@ def GenStateInfo(in_file, out_file, prefix, append):
         for var in var_pairs:
             # comment
             fw.write('// {0}\n'.format(var['desp']))
+
             # name
-            fw.write('#define {0}_{1} "{2}_{3}"\n'.format(prefix.upper(), \
-                                                          var['name'].upper(), \
-                                                          prefix.lower(), \
-                                                          var['name'].lower()))
+            name_macro = '{0}_{1}'.format(prefix.upper(), var['name'].upper())
+            name_str = '{0}_{1}'.format(prefix.lower(), var['name'].lower())
+
+            if (var['name'][:2] == 'D_'):
+                # duplicated register groups
+                fw.write('#define {0} "{1}"\n'.format(nvdla.RegGroupMacro(name_macro, 0), \
+                                                      nvdla.RegGroupStr(name_str, 0)))
+                fw.write('#define {0} "{1}"\n'.format(nvdla.RegGroupMacro(name_macro, 1), \
+                                                      nvdla.RegGroupStr(name_str, 1)))
+            else:
+                # single reigster groups
+                fw.write('#define {0} "{1}"\n'.format(name_macro, name_str))
+
             # define address space
             fw.write('#define {0}_{1}_ADDR {2}\n'.format(prefix.upper(), \
                                                          var['name'].upper(), \

@@ -25,12 +25,14 @@ namespace ilang {
 #define CMAC_B_S_POINTER_BWID 32
 
 // Set it to 1 to kick off operation for current register group
-#define CMAC_B_D_OP_ENABLE "cmac_b_d_op_enable"
+#define CMAC_B_D_OP_ENABLE_G0 "cmac_b_d_op_enable_g0"
+#define CMAC_B_D_OP_ENABLE_G1 "cmac_b_d_op_enable_g1"
 #define CMAC_B_D_OP_ENABLE_ADDR 0x8008
 #define CMAC_B_D_OP_ENABLE_BWID 32
 
 // Configuration of operation: convolution mode, precision, etc.
-#define CMAC_B_D_MISC_CFG "cmac_b_d_misc_cfg"
+#define CMAC_B_D_MISC_CFG_G0 "cmac_b_d_misc_cfg_g0"
+#define CMAC_B_D_MISC_CFG_G1 "cmac_b_d_misc_cfg_g1"
 #define CMAC_B_D_MISC_CFG_ADDR 0x800c
 #define CMAC_B_D_MISC_CFG_BWID 32
 

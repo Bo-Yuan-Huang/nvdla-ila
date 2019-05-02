@@ -4,14 +4,7 @@ import argparse
 import os
 import parse_nvdla_spec as nvdla
 
-def GenStateDefine(unit, spec, odir, append):
-    if not os.path.exists(odir):
-        os.mkdir(odir)
-
-    file_prefix = 'state_define'
-    out_file_name = nvdla.FormatSourceFileName(file_prefix, unit)
-    out_file = os.path.join(odir, out_file_name)
-
+def GenStateDefine(spec, out_file, unit, append):
     if append:
         mode = 'a'
     else:
@@ -19,7 +12,7 @@ def GenStateDefine(unit, spec, odir, append):
 
     with open(out_file, mode) as fw:
         # header
-        file_name_comment = nvdla.FormatSourceFileComment(file_prefix, unit)
+        file_name_comment = nvdla.FormatSourceFileComment('state_define', unit)
         fw.write(file_name_comment)
         fw.write('\n')
 
@@ -57,8 +50,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate state variable define code')
     parser.add_argument('unit', type=str, help='sub-unit name (e.g. "cdma")')
     parser.add_argument('spec', type=str, help='input spec file (e.g. "spec_cdma.txt")')
-    parser.add_argument('odir', type=str, help='output directory')
+    parser.add_argument('odst', type=str, help='output file')
     parser.add_argument('--append', dest='append', type=bool, help='append to file')
     args = parser.parse_args()
 
-    GenStateDefine(args.unit, args.spec, args.odir, args.append)
+    GenStateDefine(args.spec, args.odst, args.unit, args.append)

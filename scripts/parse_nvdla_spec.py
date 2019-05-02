@@ -38,6 +38,10 @@ def ParseNvDlaSpec(in_file):
 
     return result
 
+def FormatSpecFileName(file_prefix, tag):
+    file_name = '{0}_{1}.txt'.format(file_prefix.lower(), tag.lower())
+    return file_name
+
 def FormatHeaderFileName(file_prefix, tag):
     file_name = '{0}_{1}.h'.format(file_prefix.lower(), tag.lower())
     return file_name

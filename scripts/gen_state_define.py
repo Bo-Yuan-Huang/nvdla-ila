@@ -32,9 +32,20 @@ def GenStateDefine(spec, out_file, unit, append):
         for var in var_pairs:
             # comment
             fw.write('// {0}\n'.format(var['desp']))
+
             # create state var
-            fw.write('NewState(m, {0}_{1}, {0}_{1}_BWID);\n'.format(unit.upper(), \
-                                                                    var['name'].upper()))
+            name_macro = '{0}_{1}'.format(unit.upper(), var['name'].upper())
+
+            if (var['name'][:2] == 'D_'):
+                # duplicated register groups
+                fw.write('NewState(m, {0}, {1}_BWID);\n'.format(nvdla.RegGroupMacro(name_macro, 0), \
+                                                                name_macro))
+                fw.write('NewState(m, {0}, {1}_BWID);\n'.format(nvdla.RegGroupMacro(name_macro, 1), \
+                                                                name_macro))
+            else:
+                # single register groups
+                fw.write('NewState(m, {0}, {0}_BWID);\n'.format(name_macro))
+
             # line break
             fw.write('\n')
 

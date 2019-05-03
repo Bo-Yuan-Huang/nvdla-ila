@@ -23,10 +23,12 @@ void StateDefineCmac_B(Ila& m) {
   NewState(m, CMAC_B_S_POINTER, CMAC_B_S_POINTER_BWID);
 
   // Set it to 1 to kick off operation for current register group
-  NewState(m, CMAC_B_D_OP_ENABLE, CMAC_B_D_OP_ENABLE_BWID);
+  NewState(m, CMAC_B_D_OP_ENABLE_G0, CMAC_B_D_OP_ENABLE_BWID);
+  NewState(m, CMAC_B_D_OP_ENABLE_G1, CMAC_B_D_OP_ENABLE_BWID);
 
   // Configuration of operation: convolution mode, precision, etc.
-  NewState(m, CMAC_B_D_MISC_CFG, CMAC_B_D_MISC_CFG_BWID);
+  NewState(m, CMAC_B_D_MISC_CFG_G0, CMAC_B_D_MISC_CFG_BWID);
+  NewState(m, CMAC_B_D_MISC_CFG_G1, CMAC_B_D_MISC_CFG_BWID);
 
   return;
 }

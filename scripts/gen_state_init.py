@@ -33,9 +33,18 @@ def GenStateInit(spec, out_file, unit, append):
         for var in var_pairs:
             # comment
             fw.write('// {0}\n'.format(var['desp']))
-            # create state var
-            fw.write('m.AddInit(m.state({0}_{1}) == 0);\n'.format(unit.upper(), \
-                                                                  var['name'].upper()))
+
+            # init constraint
+            name_macro = '{0}_{1}'.format(unit.upper(), var['name'].upper())
+
+            if (var['name'][:2] == 'D_'):
+                # duplicated register groups
+                fw.write('m.AddInit(m.state({0}) == 0);\n'.format(nvdla.RegGroupMacro(name_macro, 0)))
+                fw.write('m.AddInit(m.state({0}) == 0);\n'.format(nvdla.RegGroupMacro(name_macro, 1)))
+            else:
+                # single register groups
+                fw.write('m.AddInit(m.state({0}) == 0);\n'.format(name_macro))
+
             # line break
             fw.write('\n')
 

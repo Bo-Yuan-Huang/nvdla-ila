@@ -61,153 +61,202 @@ void StateInitSdp(Ila& m) {
   m.AddInit(m.state(SDP_S_LUT_LO_SLOPE_SHIFT) == 0);
 
   // Set it to 1 to kick off operation for current register group
-  m.AddInit(m.state(SDP_D_OP_ENABLE) == 0);
+  m.AddInit(m.state(SDP_D_OP_ENABLE_G0) == 0);
+  m.AddInit(m.state(SDP_D_OP_ENABLE_G1) == 0);
 
   // Input cube’s width
-  m.AddInit(m.state(SDP_D_DATA_CUBE_WIDTH) == 0);
+  m.AddInit(m.state(SDP_D_DATA_CUBE_WIDTH_G0) == 0);
+  m.AddInit(m.state(SDP_D_DATA_CUBE_WIDTH_G1) == 0);
 
   // Input cube’s height
-  m.AddInit(m.state(SDP_D_DATA_CUBE_HEIGHT) == 0);
+  m.AddInit(m.state(SDP_D_DATA_CUBE_HEIGHT_G0) == 0);
+  m.AddInit(m.state(SDP_D_DATA_CUBE_HEIGHT_G1) == 0);
 
   // Input cube’s channel
-  m.AddInit(m.state(SDP_D_DATA_CUBE_CHANNEL) == 0);
+  m.AddInit(m.state(SDP_D_DATA_CUBE_CHANNEL_G0) == 0);
+  m.AddInit(m.state(SDP_D_DATA_CUBE_CHANNEL_G1) == 0);
 
   // Lower 32bits of output data address
-  m.AddInit(m.state(SDP_D_DST_BASE_ADDR_LOW) == 0);
+  m.AddInit(m.state(SDP_D_DST_BASE_ADDR_LOW_G0) == 0);
+  m.AddInit(m.state(SDP_D_DST_BASE_ADDR_LOW_G1) == 0);
 
   // Higher 32bits of output data address when axi awaddr is 64bits
-  m.AddInit(m.state(SDP_D_DST_BASE_ADDR_HIGH) == 0);
+  m.AddInit(m.state(SDP_D_DST_BASE_ADDR_HIGH_G0) == 0);
+  m.AddInit(m.state(SDP_D_DST_BASE_ADDR_HIGH_G1) == 0);
 
   // Line stride of output data cube
-  m.AddInit(m.state(SDP_D_DST_LINE_STRIDE) == 0);
+  m.AddInit(m.state(SDP_D_DST_LINE_STRIDE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DST_LINE_STRIDE_G1) == 0);
 
   // Surface stride of output data cube
-  m.AddInit(m.state(SDP_D_DST_SURFACE_STRIDE) == 0);
+  m.AddInit(m.state(SDP_D_DST_SURFACE_STRIDE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DST_SURFACE_STRIDE_G1) == 0);
 
   // Configurations of BS module: bypass, algorithm, etc.
-  m.AddInit(m.state(SDP_D_DP_BS_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_CFG_G1) == 0);
 
   // Source type and shifter value of BS ALU
-  m.AddInit(m.state(SDP_D_DP_BS_ALU_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_ALU_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_ALU_CFG_G1) == 0);
 
   // Operand value of BS ALU
-  m.AddInit(m.state(SDP_D_DP_BS_ALU_SRC_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_ALU_SRC_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_ALU_SRC_VALUE_G1) == 0);
 
   // Source type and shifter value of BS MUL
-  m.AddInit(m.state(SDP_D_DP_BS_MUL_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_MUL_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_MUL_CFG_G1) == 0);
 
   // Operand value of BS MUL
-  m.AddInit(m.state(SDP_D_DP_BS_MUL_SRC_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_MUL_SRC_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BS_MUL_SRC_VALUE_G1) == 0);
 
   // Configurations of BN module: bypass, algorithm, etc.
-  m.AddInit(m.state(SDP_D_DP_BN_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_CFG_G1) == 0);
 
   // Source type and shifter value of BN ALU
-  m.AddInit(m.state(SDP_D_DP_BN_ALU_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_ALU_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_ALU_CFG_G1) == 0);
 
   // Operand value of BN ALU
-  m.AddInit(m.state(SDP_D_DP_BN_ALU_SRC_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_ALU_SRC_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_ALU_SRC_VALUE_G1) == 0);
 
   // Source type and shifter value of BN MUL
-  m.AddInit(m.state(SDP_D_DP_BN_MUL_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_MUL_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_MUL_CFG_G1) == 0);
 
   // Operand value of BN MUL
-  m.AddInit(m.state(SDP_D_DP_BN_MUL_SRC_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_MUL_SRC_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_BN_MUL_SRC_VALUE_G1) == 0);
 
   // Configurations of EW module: bypass, algorithm, etc.
-  m.AddInit(m.state(SDP_D_DP_EW_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_CFG_G1) == 0);
 
   // Source type and bypass control of EW ALU
-  m.AddInit(m.state(SDP_D_DP_EW_ALU_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_CFG_G1) == 0);
 
   // Operand value of EW ALU
-  m.AddInit(m.state(SDP_D_DP_EW_ALU_SRC_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_SRC_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_SRC_VALUE_G1) == 0);
 
   // Converter offset of EW ALU
-  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_OFFSET_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_OFFSET_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_OFFSET_VALUE_G1) == 0);
 
   // Converter scale of EW ALU
-  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_SCALE_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_SCALE_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_SCALE_VALUE_G1) == 0);
 
   // Converter truncate of EW ALU
-  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_TRUNCATE_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_TRUNCATE_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_ALU_CVT_TRUNCATE_VALUE_G1) == 0);
 
   // Source type and bypass control of EW MUL
-  m.AddInit(m.state(SDP_D_DP_EW_MUL_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_CFG_G1) == 0);
 
   // Operand value of EW MUL
-  m.AddInit(m.state(SDP_D_DP_EW_MUL_SRC_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_SRC_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_SRC_VALUE_G1) == 0);
 
   // Converter offset of EW MUL
-  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_OFFSET_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_OFFSET_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_OFFSET_VALUE_G1) == 0);
 
   // Converter scale of EW MUL
-  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_SCALE_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_SCALE_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_SCALE_VALUE_G1) == 0);
 
   // Converter truncate of EW MUL
-  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_TRUNCATE_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_TRUNCATE_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_MUL_CVT_TRUNCATE_VALUE_G1) == 0);
 
   // Truncate of EW
-  m.AddInit(m.state(SDP_D_DP_EW_TRUNCATE_VALUE) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_TRUNCATE_VALUE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DP_EW_TRUNCATE_VALUE_G1) == 0);
 
   // Operation configuration: flying mode, output destination, Direct or
   // Winograd mode, flush NaN to zero, batch number.
-  m.AddInit(m.state(SDP_D_FEATURE_MODE_CFG) == 0);
+  m.AddInit(m.state(SDP_D_FEATURE_MODE_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_FEATURE_MODE_CFG_G1) == 0);
 
   // Destination RAM type
-  m.AddInit(m.state(SDP_D_DST_DMA_CFG) == 0);
+  m.AddInit(m.state(SDP_D_DST_DMA_CFG_G0) == 0);
+  m.AddInit(m.state(SDP_D_DST_DMA_CFG_G1) == 0);
 
   // Stride of output cubes in batch mode
-  m.AddInit(m.state(SDP_D_DST_BATCH_STRIDE) == 0);
+  m.AddInit(m.state(SDP_D_DST_BATCH_STRIDE_G0) == 0);
+  m.AddInit(m.state(SDP_D_DST_BATCH_STRIDE_G1) == 0);
 
   // Data precision
-  m.AddInit(m.state(SDP_D_DATA_FORMAT) == 0);
+  m.AddInit(m.state(SDP_D_DATA_FORMAT_G0) == 0);
+  m.AddInit(m.state(SDP_D_DATA_FORMAT_G1) == 0);
 
   // Output converter offset
-  m.AddInit(m.state(SDP_D_CVT_OFFSET) == 0);
+  m.AddInit(m.state(SDP_D_CVT_OFFSET_G0) == 0);
+  m.AddInit(m.state(SDP_D_CVT_OFFSET_G1) == 0);
 
   // Output converter scale
-  m.AddInit(m.state(SDP_D_CVT_SCALE) == 0);
+  m.AddInit(m.state(SDP_D_CVT_SCALE_G0) == 0);
+  m.AddInit(m.state(SDP_D_CVT_SCALE_G1) == 0);
 
   // Output converter shifter value
-  m.AddInit(m.state(SDP_D_CVT_SHIFT) == 0);
+  m.AddInit(m.state(SDP_D_CVT_SHIFT_G0) == 0);
+  m.AddInit(m.state(SDP_D_CVT_SHIFT_G1) == 0);
 
   // Output of equal mode
-  m.AddInit(m.state(SDP_D_STATUS) == 0);
+  m.AddInit(m.state(SDP_D_STATUS_G0) == 0);
+  m.AddInit(m.state(SDP_D_STATUS_G1) == 0);
 
   // Input NaN element number
-  m.AddInit(m.state(SDP_D_STATUS_NAN_INPUT_NUM) == 0);
+  m.AddInit(m.state(SDP_D_STATUS_NAN_INPUT_NUM_G0) == 0);
+  m.AddInit(m.state(SDP_D_STATUS_NAN_INPUT_NUM_G1) == 0);
 
   // Input Infinity element number
-  m.AddInit(m.state(SDP_D_STATUS_INF_INPUT_NUM) == 0);
+  m.AddInit(m.state(SDP_D_STATUS_INF_INPUT_NUM_G0) == 0);
+  m.AddInit(m.state(SDP_D_STATUS_INF_INPUT_NUM_G1) == 0);
 
   // Output NaN element number
-  m.AddInit(m.state(SDP_D_STATUS_NAN_OUTPUT_NUM) == 0);
+  m.AddInit(m.state(SDP_D_STATUS_NAN_OUTPUT_NUM_G0) == 0);
+  m.AddInit(m.state(SDP_D_STATUS_NAN_OUTPUT_NUM_G1) == 0);
 
   // Enable/Disable performance counting
-  m.AddInit(m.state(SDP_D_PERF_ENABLE) == 0);
+  m.AddInit(m.state(SDP_D_PERF_ENABLE_G0) == 0);
+  m.AddInit(m.state(SDP_D_PERF_ENABLE_G1) == 0);
 
   // Count stall cycles of write DMA for one layer
-  m.AddInit(m.state(SDP_D_PERF_WDMA_WRITE_STALL) == 0);
+  m.AddInit(m.state(SDP_D_PERF_WDMA_WRITE_STALL_G0) == 0);
+  m.AddInit(m.state(SDP_D_PERF_WDMA_WRITE_STALL_G1) == 0);
 
   // Element number of both table underflow
-  m.AddInit(m.state(SDP_D_PERF_LUT_UFLOW) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_UFLOW_G0) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_UFLOW_G1) == 0);
 
   // Element number of both table overflow
-  m.AddInit(m.state(SDP_D_PERF_LUT_OFLOW) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_OFLOW_G0) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_OFLOW_G1) == 0);
 
   // Element number of both table saturation
-  m.AddInit(m.state(SDP_D_PERF_OUT_SATURATION) == 0);
+  m.AddInit(m.state(SDP_D_PERF_OUT_SATURATION_G0) == 0);
+  m.AddInit(m.state(SDP_D_PERF_OUT_SATURATION_G1) == 0);
 
   // Element number of both hit, or both miss situation that element underflow
   // one table and at the same time overflow the other.
-  m.AddInit(m.state(SDP_D_PERF_LUT_HYBRID) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_HYBRID_G0) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_HYBRID_G1) == 0);
 
   // Element number of only LE table hit
-  m.AddInit(m.state(SDP_D_PERF_LUT_LE_HIT) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_LE_HIT_G0) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_LE_HIT_G1) == 0);
 
   // Element number of only LO table hit
-  m.AddInit(m.state(SDP_D_PERF_LUT_LO_HIT) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_LO_HIT_G0) == 0);
+  m.AddInit(m.state(SDP_D_PERF_LUT_LO_HIT_G1) == 0);
 
   return;
 }

@@ -25,10 +25,12 @@ void StateInitCmac_A(Ila& m) {
   m.AddInit(m.state(CMAC_A_S_POINTER) == 0);
 
   // Set it to 1 to kick off operation for current register group
-  m.AddInit(m.state(CMAC_A_D_OP_ENABLE) == 0);
+  m.AddInit(m.state(CMAC_A_D_OP_ENABLE_G0) == 0);
+  m.AddInit(m.state(CMAC_A_D_OP_ENABLE_G1) == 0);
 
   // Configuration of operation: convolution mode, precision, etc.
-  m.AddInit(m.state(CMAC_A_D_MISC_CFG) == 0);
+  m.AddInit(m.state(CMAC_A_D_MISC_CFG_G0) == 0);
+  m.AddInit(m.state(CMAC_A_D_MISC_CFG_G1) == 0);
 
   return;
 }

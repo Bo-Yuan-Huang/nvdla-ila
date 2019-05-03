@@ -73,90 +73,118 @@ void StateInitCdp(Ila& m) {
   m.AddInit(m.state(CDP_S_LUT_LO_SLOPE_SHIFT) == 0);
 
   // Set it to 1 to kick off operation for current register group
-  m.AddInit(m.state(CDP_D_OP_ENABLE) == 0);
+  m.AddInit(m.state(CDP_D_OP_ENABLE_G0) == 0);
+  m.AddInit(m.state(CDP_D_OP_ENABLE_G1) == 0);
 
   // Square sum process bypass control and multiplier after interpolator bypass
   // control
-  m.AddInit(m.state(CDP_D_FUNC_BYPASS) == 0);
+  m.AddInit(m.state(CDP_D_FUNC_BYPASS_G0) == 0);
+  m.AddInit(m.state(CDP_D_FUNC_BYPASS_G1) == 0);
 
   // Lower 32bits of output data address
-  m.AddInit(m.state(CDP_D_DST_BASE_ADDR_LOW) == 0);
+  m.AddInit(m.state(CDP_D_DST_BASE_ADDR_LOW_G0) == 0);
+  m.AddInit(m.state(CDP_D_DST_BASE_ADDR_LOW_G1) == 0);
 
   // Higher 32bits of output data address when axi awaddr is 64bits
-  m.AddInit(m.state(CDP_D_DST_BASE_ADDR_HIGH) == 0);
+  m.AddInit(m.state(CDP_D_DST_BASE_ADDR_HIGH_G0) == 0);
+  m.AddInit(m.state(CDP_D_DST_BASE_ADDR_HIGH_G1) == 0);
 
   // Line stride of output cube
-  m.AddInit(m.state(CDP_D_DST_LINE_STRIDE) == 0);
+  m.AddInit(m.state(CDP_D_DST_LINE_STRIDE_G0) == 0);
+  m.AddInit(m.state(CDP_D_DST_LINE_STRIDE_G1) == 0);
 
   // Surface stride of output cube
-  m.AddInit(m.state(CDP_D_DST_SURFACE_STRIDE) == 0);
+  m.AddInit(m.state(CDP_D_DST_SURFACE_STRIDE_G0) == 0);
+  m.AddInit(m.state(CDP_D_DST_SURFACE_STRIDE_G1) == 0);
 
   // RAM type of output data cube
-  m.AddInit(m.state(CDP_D_DST_DMA_CFG) == 0);
+  m.AddInit(m.state(CDP_D_DST_DMA_CFG_G0) == 0);
+  m.AddInit(m.state(CDP_D_DST_DMA_CFG_G1) == 0);
 
   // This register is not used in OpenDLA 1.0
-  m.AddInit(m.state(CDP_D_DST_COMPRESSION_EN) == 0);
+  m.AddInit(m.state(CDP_D_DST_COMPRESSION_EN_G0) == 0);
+  m.AddInit(m.state(CDP_D_DST_COMPRESSION_EN_G1) == 0);
 
   // Precision of input data
-  m.AddInit(m.state(CDP_D_DATA_FORMAT) == 0);
+  m.AddInit(m.state(CDP_D_DATA_FORMAT_G0) == 0);
+  m.AddInit(m.state(CDP_D_DATA_FORMAT_G1) == 0);
 
   // Option to flush input NaN to zero
-  m.AddInit(m.state(CDP_D_NAN_FLUSH_TO_ZERO) == 0);
+  m.AddInit(m.state(CDP_D_NAN_FLUSH_TO_ZERO_G0) == 0);
+  m.AddInit(m.state(CDP_D_NAN_FLUSH_TO_ZERO_G1) == 0);
 
   // Normalization length
-  m.AddInit(m.state(CDP_D_LRN_CFG) == 0);
+  m.AddInit(m.state(CDP_D_LRN_CFG_G0) == 0);
+  m.AddInit(m.state(CDP_D_LRN_CFG_G1) == 0);
 
   // Input data convertor offset
-  m.AddInit(m.state(CDP_D_DATIN_OFFSET) == 0);
+  m.AddInit(m.state(CDP_D_DATIN_OFFSET_G0) == 0);
+  m.AddInit(m.state(CDP_D_DATIN_OFFSET_G1) == 0);
 
   // Input data convertor scale
-  m.AddInit(m.state(CDP_D_DATIN_SCALE) == 0);
+  m.AddInit(m.state(CDP_D_DATIN_SCALE_G0) == 0);
+  m.AddInit(m.state(CDP_D_DATIN_SCALE_G1) == 0);
 
   // Input data convertor shifter value
-  m.AddInit(m.state(CDP_D_DATIN_SHIFTER) == 0);
+  m.AddInit(m.state(CDP_D_DATIN_SHIFTER_G0) == 0);
+  m.AddInit(m.state(CDP_D_DATIN_SHIFTER_G1) == 0);
 
   // Output data convertor offset
-  m.AddInit(m.state(CDP_D_DATOUT_OFFSET) == 0);
+  m.AddInit(m.state(CDP_D_DATOUT_OFFSET_G0) == 0);
+  m.AddInit(m.state(CDP_D_DATOUT_OFFSET_G1) == 0);
 
   // Output data convertor scale
-  m.AddInit(m.state(CDP_D_DATOUT_SCALE) == 0);
+  m.AddInit(m.state(CDP_D_DATOUT_SCALE_G0) == 0);
+  m.AddInit(m.state(CDP_D_DATOUT_SCALE_G1) == 0);
 
   // Output data convertor shifter value
-  m.AddInit(m.state(CDP_D_DATOUT_SHIFTER) == 0);
+  m.AddInit(m.state(CDP_D_DATOUT_SHIFTER_G0) == 0);
+  m.AddInit(m.state(CDP_D_DATOUT_SHIFTER_G1) == 0);
 
   // input NaN element number
-  m.AddInit(m.state(CDP_D_NAN_INPUT_NUM) == 0);
+  m.AddInit(m.state(CDP_D_NAN_INPUT_NUM_G0) == 0);
+  m.AddInit(m.state(CDP_D_NAN_INPUT_NUM_G1) == 0);
 
   // input Infinity element number
-  m.AddInit(m.state(CDP_D_INF_INPUT_NUM) == 0);
+  m.AddInit(m.state(CDP_D_INF_INPUT_NUM_G0) == 0);
+  m.AddInit(m.state(CDP_D_INF_INPUT_NUM_G1) == 0);
 
   // output NaN element number
-  m.AddInit(m.state(CDP_D_NAN_OUTPUT_NUM) == 0);
+  m.AddInit(m.state(CDP_D_NAN_OUTPUT_NUM_G0) == 0);
+  m.AddInit(m.state(CDP_D_NAN_OUTPUT_NUM_G1) == 0);
 
   // saturated element number.
-  m.AddInit(m.state(CDP_D_OUT_SATURATION) == 0);
+  m.AddInit(m.state(CDP_D_OUT_SATURATION_G0) == 0);
+  m.AddInit(m.state(CDP_D_OUT_SATURATION_G1) == 0);
 
   // Enable/Disable performance counting
-  m.AddInit(m.state(CDP_D_PERF_ENABLE) == 0);
+  m.AddInit(m.state(CDP_D_PERF_ENABLE_G0) == 0);
+  m.AddInit(m.state(CDP_D_PERF_ENABLE_G1) == 0);
 
   // Element number that for both LUT under-flow
-  m.AddInit(m.state(CDP_D_PERF_WRITE_STALL) == 0);
+  m.AddInit(m.state(CDP_D_PERF_WRITE_STALL_G0) == 0);
+  m.AddInit(m.state(CDP_D_PERF_WRITE_STALL_G1) == 0);
 
   // Element number that for both LUT under-flow
-  m.AddInit(m.state(CDP_D_PERF_LUT_UFLOW) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_UFLOW_G0) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_UFLOW_G1) == 0);
 
   // Element number that for both LUT over-flow
-  m.AddInit(m.state(CDP_D_PERF_LUT_OFLOW) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_OFLOW_G0) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_OFLOW_G1) == 0);
 
   // Element number that for both LUT miss, one is over-flow and the other is
   // overflow
-  m.AddInit(m.state(CDP_D_PERF_LUT_HYBRID) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_HYBRID_G0) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_HYBRID_G1) == 0);
 
   // Element number that for LE_lut hit only
-  m.AddInit(m.state(CDP_D_PERF_LUT_LE_HIT) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_LE_HIT_G0) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_LE_HIT_G1) == 0);
 
   // Element number that for LO_lut hit only
-  m.AddInit(m.state(CDP_D_PERF_LUT_LO_HIT) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_LO_HIT_G0) == 0);
+  m.AddInit(m.state(CDP_D_PERF_LUT_LO_HIT_G1) == 0);
 
   return;
 }

@@ -71,6 +71,8 @@ def GenAllStateInit(spec_dir, dst_dir, unit):
 
         Format(out_file_full)
 
+    return
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Scripts entry point')
     parser.add_argument('--all', action='store_true', help='run all options')

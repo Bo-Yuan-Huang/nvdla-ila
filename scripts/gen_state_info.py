@@ -48,7 +48,8 @@ def GenStateInfo(in_file, out_file, prefix, append):
             # define address space
             fw.write('#define {0}_ADDR {1}\n'.format(name_macro, var['addr']))
             # bit width
-            fw.write('#define {0}_BWID ICFG_CSB_DATA_BWID\n'.format(name_macro))
+            fw.write(
+                '#define {0}_BWID ICFG_CSB_DATA_BWID\n'.format(name_macro))
             # line break
             fw.write('\n')
 

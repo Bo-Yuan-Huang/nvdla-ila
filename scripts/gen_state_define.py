@@ -4,6 +4,7 @@ import argparse
 import os
 import parse_nvdla_spec as nvdla
 
+
 def GenStateDefine(spec, out_file, unit, append):
     if append:
         mode = 'a'
@@ -34,13 +35,13 @@ def GenStateDefine(spec, out_file, unit, append):
             fw.write('// {0}\n'.format(var['desp']))
 
             # create state var
-            name_macro = '{0}_{1}'.format(unit.upper(), var['name'].upper())
+            name_macro = nvdla.RegNameMacro(unit, var['name'])
 
-            if (var['name'][:2] == 'D_'):
+            if (nvdla.IsPingPongReg(var['name'])):
                 # duplicated register groups
-                fw.write('NewState(m, {0}, {1}_BWID);\n'.format(nvdla.RegGroupMacro(name_macro, 0), \
+                fw.write('NewState(m, {0}, {1}_BWID);\n'.format(nvdla.RegGroupMacro(name_macro, 0),
                                                                 name_macro))
-                fw.write('NewState(m, {0}, {1}_BWID);\n'.format(nvdla.RegGroupMacro(name_macro, 1), \
+                fw.write('NewState(m, {0}, {1}_BWID);\n'.format(nvdla.RegGroupMacro(name_macro, 1),
                                                                 name_macro))
             else:
                 # single register groups
@@ -57,12 +58,14 @@ def GenStateDefine(spec, out_file, unit, append):
         for l in namespace_end:
             fw.write(l)
 
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Generate state variable define code')
+    parser = argparse.ArgumentParser(
+        description='Generate state variable define code')
     parser.add_argument('unit', type=str, help='sub-unit name (e.g. "cdma")')
-    parser.add_argument('spec', type=str, help='input spec file (e.g. "spec_cdma.txt")')
+    parser.add_argument('spec', type=str, help='input spec file')
     parser.add_argument('odst', type=str, help='output file')
-    parser.add_argument('--append', dest='append', type=bool, help='append to file')
+    parser.add_argument('--append', action='store_true', help='append to file')
     args = parser.parse_args()
 
     GenStateDefine(args.spec, args.odst, args.unit, args.append)

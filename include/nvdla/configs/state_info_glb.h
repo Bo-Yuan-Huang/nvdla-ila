@@ -11,28 +11,30 @@
 #ifndef STATE_INFO_GLB_H__
 #define STATE_INFO_GLB_H__
 
+#include <nvdla/configs/modeling_config.h>
+
 // namespace ilang
 namespace ilang {
 
 // HW version of NVDLA
 #define GLB_HW_VERSION "glb_hw_version"
 #define GLB_HW_VERSION_ADDR 0x0000
-#define GLB_HW_VERSION_BWID 32
+#define GLB_HW_VERSION_BWID ICFG_CSB_DATA_BWID
 
 // Interrupt mask control
 #define GLB_INTR_MASK "glb_intr_mask"
 #define GLB_INTR_MASK_ADDR 0x0004
-#define GLB_INTR_MASK_BWID 32
+#define GLB_INTR_MASK_BWID ICFG_CSB_DATA_BWID
 
 // Interrupt set control
 #define GLB_INTR_SET "glb_intr_set"
 #define GLB_INTR_SET_ADDR 0x0008
-#define GLB_INTR_SET_BWID 32
+#define GLB_INTR_SET_BWID ICFG_CSB_DATA_BWID
 
 // Interrupt status
 #define GLB_INTR_STATUS "glb_intr_status"
 #define GLB_INTR_STATUS_ADDR 0x000c
-#define GLB_INTR_STATUS_BWID 32
+#define GLB_INTR_STATUS_BWID ICFG_CSB_DATA_BWID
 
 }; // namespace ilang
 

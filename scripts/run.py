@@ -13,20 +13,25 @@ from gen_state_define import GenStateDefine
 
 FORMAT = ''
 
+
 def EnsurePath(dir_path):
     if not os.path.exists(dir_path):
         os.path.mkdir(dir_path)
 
+
 def AddLicenseHeader(dst_file):
     subprocess.run(['cp', 'data/license_header.h.in', dst_file])
 
+
 def Format(target_file):
     subprocess.run([FORMAT, '-i', target_file])
+
 
 def SpecFilePath(unit):
     spec_file_name = nvdla.FormatSpecFileName('spec', unit)
     spec_file_full = os.path.join(spec_dir, spec_file_name)
     return spec_file_full
+
 
 def GenAllStateInfo(spec_dir, dst_dir, units):
     for unit in units:
@@ -43,6 +48,7 @@ def GenAllStateInfo(spec_dir, dst_dir, units):
 
     return
 
+
 def GenAllStateDefine(spec_dir, dst_dir, unit):
     for unit in units:
         out_file_name = nvdla.FormatSourceFileName('state_define', unit)
@@ -56,7 +62,8 @@ def GenAllStateDefine(spec_dir, dst_dir, unit):
 
         Format(out_file_full)
 
-    return 
+    return
+
 
 def GenAllStateInit(spec_dir, dst_dir, unit):
     for unit in units:
@@ -73,20 +80,35 @@ def GenAllStateInit(spec_dir, dst_dir, unit):
 
     return
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Scripts entry point')
     parser.add_argument('--all', action='store_true', help='run all options')
-    parser.add_argument('--info', action='store_true', help='generate state info (macro)')
-    parser.add_argument('--define', action='store_true', help='generate state definition')
-    parser.add_argument('--init', action='store_true', help='generate state init constraints')
-    parser.add_argument('--format', dest='format', type=str, default='', help='clang-format exec')
+    parser.add_argument(
+        '--info',
+        action='store_true',
+        help='generate state info (macro)')
+    parser.add_argument(
+        '--define',
+        action='store_true',
+        help='generate state definition')
+    parser.add_argument(
+        '--init',
+        action='store_true',
+        help='generate state init constraints')
+    parser.add_argument(
+        '--format',
+        dest='format',
+        type=str,
+        default='',
+        help='clang-format exec')
     args = parser.parse_args()
 
     spec_dir = 'data'
     src_dir = 'src'
     header_dir = 'include/nvdla'
-    units = ['bdma', 'cacc', 'cdma', 'cdp', 'cdp_rdma', 'cmac_a', 'cmac_b', \
-             'csc', 'glb', 'mcif', 'pdp', 'pdp_rdma', 'rubik', 'sdp', \
+    units = ['bdma', 'cacc', 'cdma', 'cdp', 'cdp_rdma', 'cmac_a', 'cmac_b',
+             'csc', 'glb', 'mcif', 'pdp', 'pdp_rdma', 'rubik', 'sdp',
              'sdp_rdma', 'sramif']
 
     if (args.format is ''):

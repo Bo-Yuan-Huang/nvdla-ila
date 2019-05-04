@@ -4,6 +4,7 @@ import argparse
 import os
 import parse_nvdla_spec as nvdla
 
+
 def GenStateInit(spec, out_file, unit, append):
     if append:
         mode = 'a'
@@ -35,12 +36,18 @@ def GenStateInit(spec, out_file, unit, append):
             fw.write('// {0}\n'.format(var['desp']))
 
             # init constraint
-            name_macro = '{0}_{1}'.format(unit.upper(), var['name'].upper())
+            name_macro = nvdla.RegNameMacro(unit, var['name'])
 
-            if (var['name'][:2] == 'D_'):
+            if (nvdla.IsPingPongReg(var['name'])):
                 # duplicated register groups
-                fw.write('m.AddInit(m.state({0}) == 0);\n'.format(nvdla.RegGroupMacro(name_macro, 0)))
-                fw.write('m.AddInit(m.state({0}) == 0);\n'.format(nvdla.RegGroupMacro(name_macro, 1)))
+                fw.write(
+                    'm.AddInit(m.state({0}) == 0);\n'.format(
+                        nvdla.RegGroupMacro(
+                            name_macro, 0)))
+                fw.write(
+                    'm.AddInit(m.state({0}) == 0);\n'.format(
+                        nvdla.RegGroupMacro(
+                            name_macro, 1)))
             else:
                 # single register groups
                 fw.write('m.AddInit(m.state({0}) == 0);\n'.format(name_macro))
@@ -56,12 +63,21 @@ def GenStateInit(spec, out_file, unit, append):
         for l in namespace_end:
             fw.write(l)
 
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Generate state variable initial condition')
+    parser = argparse.ArgumentParser(
+        description='Generate state variable initial condition')
     parser.add_argument('unit', type=str, help='sub-unit name (e.g. "cdma")')
-    parser.add_argument('spec', type=str, help='input spec file (e.g. "spec_cdma.txt")')
+    parser.add_argument(
+        'spec',
+        type=str,
+        help='input spec file (e.g. "spec_cdma.txt")')
     parser.add_argument('odst', type=str, help='output file')
-    parser.add_argument('--append', dest='append', type=bool, help='append to file')
+    parser.add_argument(
+        '--append',
+        dest='append',
+        type=bool,
+        help='append to file')
     args = parser.parse_args()
 
     GenStateInit(args.spec, args.odst, args.unit, args.append)

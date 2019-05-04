@@ -14,11 +14,11 @@
 namespace ilang {
 
 ExprRef BoolVal(const int& val) {
-#ifdef MODEL_BOOL_AS_BV
+#ifdef ICFG_BOOL_AS_BV
   return BvConst(val, 1);
-#else  // MODEL_BOOL_AS_BV
+#else  // ICFG_BOOL_AS_BV
   return BoolConst(val == 1);
-#endif // MODEL_BOOL_AS_BV
+#endif // ICFG_BOOL_AS_BV
 }
 
 ExprRef IsTrue(const ExprRef& e) { return (e == BoolVal(1)); }
@@ -26,31 +26,31 @@ ExprRef IsTrue(const ExprRef& e) { return (e == BoolVal(1)); }
 ExprRef IsFalse(const ExprRef& e) { return (e == BoolVal(0)); }
 
 ExprRef NewInput(Ila& m, const std::string& name, const int& wid) {
-#ifdef MODEL_BOOL_AS_BV
+#ifdef ICFG_BOOL_AS_BV
   return m.NewBvInput(name, wid);
 
-#else // MODEL_BOOL_AS_BV
+#else // ICFG_BOOL_AS_BV
   if (wid == 1) {
     return m.NewBoolInput(name);
   } else {
     return m.NewBvInput(name, wid);
   }
 
-#endif // MODEL_BOOL_AS_BV
+#endif // ICFG_BOOL_AS_BV
 }
 
 ExprRef NewState(Ila& m, const std::string& name, const int& wid) {
-#ifdef MODEL_BOOL_AS_BV
+#ifdef ICFG_BOOL_AS_BV
   return m.NewBvState(name, wid);
 
-#else // MODEL_BOOL_AS_BV
+#else // ICFG_BOOL_AS_BV
   if (wid == 1) {
     return m.NewBoolState(name);
   } else {
     return m.NewBvState(name, wid);
   }
 
-#endif // MODEL_BOOL_AS_BV
+#endif // ICFG_BOOL_AS_BV
 }
 
 }; // namespace ilang

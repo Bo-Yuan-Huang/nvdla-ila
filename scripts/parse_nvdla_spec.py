@@ -2,10 +2,12 @@
 
 from enum import Enum
 
+
 class SpecState(Enum):
     NAME = 1
     ADDR = 2
     DESP = 3
+
 
 def ParseNvDlaSpec(in_file):
     state = SpecState.NAME
@@ -23,13 +25,13 @@ def ParseNvDlaSpec(in_file):
 
                 try:
                     val = int(addr, 16)
-                except:
+                except BaseException:
                     print('Fail handling address value', addr)
 
             else:
                 desp = line.strip('\n')
                 state = SpecState.NAME
-        
+
                 pair = {}
                 pair['name'] = name
                 pair['addr'] = addr
@@ -38,40 +40,59 @@ def ParseNvDlaSpec(in_file):
 
     return result
 
+
+def IsPingPongReg(name):
+    return (name[:2] == 'D_')
+
+
 def RegGroupRaw(name, group_id):
     return '{0}_g{1}'.format(name, group_id)
+
 
 def RegGroupMacro(name, group_id):
     return RegGroupRaw(name, group_id).upper()
 
+
 def RegGroupStr(name, group_id):
     return RegGroupRaw(name, group_id).lower()
+
+
+def RegNameMacro(unit, name):
+    macro = '{0}_{1}'.format(unit, name)
+    return macro.upper()
+
 
 def FormatSpecFileName(file_prefix, tag):
     file_name = '{0}_{1}.txt'.format(file_prefix.lower(), tag.lower())
     return file_name
 
+
 def FormatHeaderFileName(file_prefix, tag):
     file_name = '{0}_{1}.h'.format(file_prefix.lower(), tag.lower())
     return file_name
+
 
 def FormatSourceFileName(file_prefix, tag):
     file_name = '{0}_{1}.cc'.format(file_prefix.lower(), tag.lower())
     return file_name
 
+
 def FormatGuardTag(file_prefix, tag):
     guard_tag = '{0}_{1}_H__'.format(file_prefix.upper(), tag.upper())
     return guard_tag
+
 
 def FormatHeaderFileComment(file_prefix, tag):
     file_name = FormatHeaderFileName(file_prefix, tag)
     comment = '// File Name: {0}\n'.format(file_name)
     return comment
 
+
 def FormatSourceFileComment(file_prefix, tag):
     file_name = FormatSourceFileName(file_prefix, tag)
     comment = '// File Name: {0}\n'.format(file_name)
     return comment
+
 
 def NameSpaceHead():
     lines = []
@@ -81,12 +102,14 @@ def NameSpaceHead():
     lines.append('\n')
     return lines
 
+
 def NameSpaceTail():
     lines = []
     lines.append('\n')
     lines.append('}; // namespace ilnag\n\n')
     lines.append('\n')
-    return lines;
+    return lines
+
 
 def GenHeaderHead(file_prefix, tag):
     lines = []
@@ -100,20 +123,20 @@ def GenHeaderHead(file_prefix, tag):
     lines.append('#define {0}\n'.format(guard_tag))
     lines.append('\n')
 
-    namespace_begin = NameSpaceHead()
-    lines = lines + namespace_begin
+    #namespace_begin = NameSpaceHead()
+    #lines = lines + namespace_begin
 
     return lines
+
 
 def GenHeaderTail(file_prefix, tag):
     lines = []
 
-    namespace_end = NameSpaceTail()
-    lines = lines + namespace_end
+    #namespace_end = NameSpaceTail()
+    #lines = lines + namespace_end
 
     guard_tag = FormatGuardTag(file_prefix, tag)
     lines.append('#endif // {0}\n'.format(guard_tag))
     lines.append('\n')
 
     return lines
-

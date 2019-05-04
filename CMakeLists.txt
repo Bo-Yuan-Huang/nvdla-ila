@@ -69,6 +69,24 @@ add_executable(${MyTarget}
   src/state_init/state_init_sdp.cc
   src/state_init/state_init_sdp_rdma.cc
   src/state_init/state_init_sramif.cc
+
+  src/state_update/ppsm_bdma.cc
+  src/state_update/ppsm_cacc.cc
+  src/state_update/ppsm_cdma.cc
+  src/state_update/ppsm_cdp.cc
+  src/state_update/ppsm_cdp_rdma.cc
+  src/state_update/ppsm_cmac_a.cc
+  src/state_update/ppsm_cmac_b.cc
+  src/state_update/ppsm_csc.cc
+  src/state_update/ppsm_glb.cc
+  src/state_update/ppsm_mcif.cc
+  src/state_update/ppsm_pdp.cc
+  src/state_update/ppsm_pdp_rdma.cc
+  src/state_update/ppsm_rubik.cc
+  src/state_update/ppsm_sdp.cc
+  src/state_update/ppsm_sdp_rdma.cc
+  src/state_update/ppsm_sramif.cc
+
 )
 
 target_include_directories(${MyTarget} PRIVATE include)

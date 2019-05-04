@@ -49,19 +49,6 @@ private:
   // set instructions
   static void SetInstr(Ila& m);
 
-  // add an instruction of writing to CSB reg in CDMA
-  static void AddCsbWrInstrCdma(Ila& m, const std::string& state_name,
-                                const int& mmio_addr);
-
-  // (util) define the ping-pong synchronization mechanism
-  static void DefinePPSM(Ila& m, const std::string& state_name);
-
-#if 0
-  // define instruction of writing a csb register (no side-effect)
-  static void DefineCsbWrInstr(Ila& m, const std::string& state_name,
-                               const int& mmio_addr);
-#endif
-
 }; // class ConvPipe
 
 }; // namespace ilang

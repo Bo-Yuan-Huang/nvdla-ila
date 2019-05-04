@@ -1,0 +1,30 @@
+// ${var_name_macro}
+void CsbWrPpsm_${var_name_macro}(Ila& m) {
+  auto instr = m.NewInstr("${instr_name}");
+  
+  // decode
+  auto is_wr = m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE);
+  auto decode = is_wr & (m.input(CSB2NVDLA_ADDR) == ${mmio_addr});
+  instr.SetDecode(decode);
+
+  // updates
+  auto producer = Extract(m.state(${pointer}), ICFG_PPSM_PTR_PRODUCER_END, ICFG_PPSM_PTR_PRODUCER_BEGIN);
+
+  auto g0_is_idle = Extract(m.state(${status}), ICFG_PPSM_STATUS_G0_END, ICFG_PPSM_STATUS_G0_BEGIN);
+  auto g1_is_idle = Extract(m.state(${status}), ICFG_PPSM_STATUS_G1_END, ICFG_PPSM_STATUS_G1_BEGIN);
+
+  auto write_to_g0 = (producer == 0) & (g0_is_idle == ICFG_PPSM_STATUS_IDLE); 
+  auto write_to_g1 = (producer == 1) & (g1_is_idle == ICFG_PPSM_STATUS_IDLE);
+
+  auto var_g0 = m.state(${var_name_g0});
+  auto var_g1 = m.state(${var_name_g1});
+
+  auto g0_next = Ite(write_to_g0, m.input(CSB2NVDLA_WDAT), var_g0);
+  auto g1_next = Ite(write_to_g1, m.input(CSB2NVDLA_WDAT), var_g1);
+
+  instr.SetUpdate(var_g0, g0_next);
+  instr.SetUpdate(var_g1, g1_next);
+
+  return;
+}
+

@@ -10,13 +10,14 @@ import parse_nvdla_spec as nvdla
 from gen_state_info import GenStateInfo
 from gen_state_init import GenStateInit
 from gen_state_define import GenStateDefine
+from gen_ppsm import GenPPSM, GenPPSMHeader
 
 FORMAT = ''
 
 
 def EnsurePath(dir_path):
     if not os.path.exists(dir_path):
-        os.path.mkdir(dir_path)
+        os.mkdir(dir_path)
 
 
 def AddLicenseHeader(dst_file):
@@ -49,7 +50,7 @@ def GenAllStateInfo(spec_dir, dst_dir, units):
     return
 
 
-def GenAllStateDefine(spec_dir, dst_dir, unit):
+def GenAllStateDefine(spec_dir, dst_dir, units):
     for unit in units:
         out_file_name = nvdla.FormatSourceFileName('state_define', unit)
         out_file_full = os.path.join(dst_dir, out_file_name)
@@ -65,7 +66,7 @@ def GenAllStateDefine(spec_dir, dst_dir, unit):
     return
 
 
-def GenAllStateInit(spec_dir, dst_dir, unit):
+def GenAllStateInit(spec_dir, dst_dir, units):
     for unit in units:
         out_file_name = nvdla.FormatSourceFileName('state_init', unit)
         out_file_full = os.path.join(dst_dir, out_file_name)
@@ -79,6 +80,34 @@ def GenAllStateInit(spec_dir, dst_dir, unit):
         Format(out_file_full)
 
     return
+
+
+def GenAllPPSM(spec_dir, dst_dir, units):
+    for unit in units:
+        out_file_name = nvdla.FormatSourceFileName('ppsm', unit)
+        out_file_full = os.path.join(dst_dir, out_file_name)
+
+        AddLicenseHeader(out_file_full)
+
+        spec_file = SpecFilePath(unit)
+
+        GenPPSM(spec_file, out_file_full, unit, True)
+
+        Format(out_file_full)
+
+
+def GenAllPPSMHeader(spec_dir, dst_dir, units):
+    for unit in units:
+        out_file_name = nvdla.FormatHeaderFileName('ppsm', unit)
+        out_file_full = os.path.join(dst_dir, out_file_name)
+
+        AddLicenseHeader(out_file_full)
+
+        spec_file = SpecFilePath(unit)
+
+        GenPPSMHeader(spec_file, out_file_full, unit, True)
+
+        Format(out_file_full)
 
 
 if __name__ == '__main__':
@@ -96,6 +125,10 @@ if __name__ == '__main__':
         '--init',
         action='store_true',
         help='generate state init constraints')
+    parser.add_argument(
+        '--ppsm',
+        action='store_true',
+        help='generate instructions for ppsm')
     parser.add_argument(
         '--format',
         dest='format',
@@ -132,3 +165,12 @@ if __name__ == '__main__':
         dst_dir = os.path.join(src_dir, 'state_init')
         EnsurePath(dst_dir)
         GenAllStateInit(spec_dir, dst_dir, units)
+
+    if (args.ppsm or args.all):
+        src_dst_dir = os.path.join(src_dir, 'state_update')
+        EnsurePath(src_dst_dir)
+        GenAllPPSM(spec_dir, src_dst_dir, units)
+
+        header_dst_dir = os.path.join(header_dir, 'state_update')
+        EnsurePath(header_dst_dir)
+        GenAllPPSMHeader(spec_dir, header_dst_dir, units)

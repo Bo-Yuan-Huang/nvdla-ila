@@ -13,6 +13,7 @@
 #include <nvdla/configs/modeling_config.h>
 #include <nvdla/configs/state_info.h>
 #include <nvdla/conv_pipe.h>
+#include <nvdla/state_update/ppsm_cdma.h>
 #include <nvdla/utils.h>
 
 // namespace ilang
@@ -99,7 +100,7 @@ void ConvPipe::SetImplStateVar(Ila& m) {
   // CBUF
   for (auto i = 0; i < NVDLA_CBUF_BANK_NUMBER; i++) {
     auto bank_i =
-        m.NewMemState(CbufBankName(i), MODEL_PTR_BWID, NVDLA_CBUF_BANK_WIDTH);
+        m.NewMemState(CbufBankName(i), ICFG_PTR_BWID, NVDLA_CBUF_BANK_WIDTH);
     bank_i.SetEntryNum(NVDLA_CBUF_BANK_DEPTH);
   }
 
@@ -114,8 +115,7 @@ void ConvPipe::SetChild(Ila& m) {
 void ConvPipe::SetInstr(Ila& m) {
   // CSB write (no side effect)
   // CDMA
-  // DefineCsbWrInstr(m, CDMA_D_MISC_CFG, CDMA_D_MISC_CFG_ADDR);
-  AddCsbWrInstrCdma(m, CDMA_D_MISC_CFG, CDMA_D_MISC_CFG_ADDR);
+  CsbWrPpsm_CDMA_D_OP_ENABLE(m);
 
   // CSC
 
@@ -125,45 +125,6 @@ void ConvPipe::SetInstr(Ila& m) {
 
   return;
 }
-
-void ConvPipe::AddCsbWrInstrCdma(Ila& m, const std::string& state_name,
-                                 const int& mmio_addr) {
-  auto instr_name = CsbWrInstrName(state_name);
-  auto instr = m.NewInstr(instr_name);
-
-  // decode
-  auto is_wr = m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE);
-  // TODO decode may depend on enable/status?
-  auto decode = (is_wr & m.input(CSB2NVDLA_ADDR) == mmio_addr);
-  instr.SetDecode(decode);
-
-  // ping-pong
-  DefinePPSM(m, state_name);
-
-  return;
-}
-
-void ConvPipe::DefinePPSM(Ila& m, const std::string& state_name) {
-  // TODO
-  return;
-}
-
-#if 0
-void ConvPipe::DefineCsbWrInstr(Ila& m, const std::string& state_name,
-                                const int& mmio_addr) {
-  auto instr_name = CsbWrInstrName(state_name);
-  auto instr = m.NewInstr(instr_name);
-
-  // decode
-  auto is_wr = m.input(CSB2NVDLA_WRITE) == BoolVal(CSB2NVDLA_WRITE_WRITE);
-  auto decode = (is_wr & m.input(CSB2NVDLA_ADDR) == mmio_addr);
-  instr.SetDecode(decode);
-
-  // ping-pong
-
-  return;
-}
-#endif
 
 }; // namespace ilang
 

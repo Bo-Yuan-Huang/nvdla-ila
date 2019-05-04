@@ -48,6 +48,9 @@ namespace ilang {
 // last bit of the "group 1 status" field in the "STATUS" register
 #define ICFG_PPSM_STATUS_G1_END (ICFG_CSB_DATA_BWID - 1)
 
+// status idle
+#define ICFG_PPSM_STATUS_IDLE 0
+
 }; // namespace ilang
 
 #endif // MODELING_CONFIG_H__

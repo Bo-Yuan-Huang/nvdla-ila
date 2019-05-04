@@ -87,7 +87,7 @@ void NvDla::GetInputAssumption(const Ila& m, ExprVec& assm) {
   // convolution pipeline
   ConvPipe::GetInputAssumption(m.child(k_name_conv_pipe), assm);
 
-#ifndef MODEL_SKIP_TODO
+#ifndef ICFG_SKIP_TODO
   // sdp pipeline
   SdpPipe::GetInputAssumption(m.child(k_name_sdp_pipe), assm);
 
@@ -120,7 +120,7 @@ void NvDla::GetStateInvariant(const Ila& m, ExprVec& invr) {
   // convolution pipeline
   ConvPipe::GetStateInvariant(m.child(k_name_conv_pipe), invr);
 
-#ifndef MODEL_SKIP_TODO
+#ifndef ICFG_SKIP_TODO
   // sdp pipeline
   SdpPipe::GetStateInvariant(m.child(k_name_sdp_pipe), invr);
 
@@ -153,7 +153,7 @@ void NvDla::SetArchStateVar(Ila& m) {
   StateDefineCsb(m);
   StateInitCsb(m);
 
-#ifdef MODEL_AXI_DETAIL
+#ifdef ICFG_AXI_DETAIL
   // DBBIF (abstract AXI protocol)
   StateDefineDbbif(m);
   StateInitDbbif(m);
@@ -188,7 +188,7 @@ void NvDla::SetImplStateVar(Ila& m) {
   auto trig_conv = NewState(m, k_trig_conv_pipe);
   m.AddInit(IsFalse(trig_conv));
 
-#ifndef MODEL_SKIP_TODO
+#ifndef ICFG_SKIP_TODO
   // single data processor pipeline
   auto trig_sdp = NewState(m, k_trig_sdp_pipe);
   m.AddInit(IsFalse(trig_sdp));
@@ -221,7 +221,7 @@ void NvDla::SetChild(Ila& m) {
   // convolution pipeline
   ConvPipe::New(m, k_name_conv_pipe);
 
-#ifndef MODEL_SKIP_TODO
+#ifndef ICFG_SKIP_TODO
   // single data processor pipeline
   SdpPipe::New(m, k_name_sdp_pipe);
 

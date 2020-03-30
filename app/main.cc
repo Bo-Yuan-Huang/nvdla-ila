@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <nvdla/nvdla_top.h>
+#include <ilang/util/log.h>
 
 using namespace ilang;
 
@@ -18,7 +19,10 @@ int main() {
   LogToErr(true);
 
   auto nvdla = NvDla::New();
-  ExportIlaPortable(nvdla, "nvdla.json");
+  ILA_INFO << "#state: " << nvdla.state_num();
+  ILA_INFO << "#instr: " << nvdla.instr_num();
+
+  // ExportIlaPortable(nvdla, "nvdla.json");
 
   auto assm = std::vector<ilang::ExprRef>();
   NvDla::GetInputAssumption(nvdla, assm);

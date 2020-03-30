@@ -106,7 +106,7 @@ def NameSpaceHead():
 def NameSpaceTail():
     lines = []
     lines.append('\n')
-    lines.append('}; // namespace ilnag\n\n')
+    lines.append('}; // namespace ilang\n\n')
     lines.append('\n')
     return lines
 

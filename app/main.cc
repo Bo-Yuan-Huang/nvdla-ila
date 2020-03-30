@@ -22,7 +22,11 @@ int main() {
   ILA_INFO << "#state: " << nvdla.state_num();
   ILA_INFO << "#instr: " << nvdla.instr_num();
 
-  // ExportIlaPortable(nvdla, "nvdla.json");
+  for (auto i = 0; i < nvdla.child_num(); i++) {
+    auto child = nvdla.child(i);
+    ILA_INFO << "#state (" << child << "): " << child.state_num();
+    ILA_INFO << "#instr (" << child << "): " << child.instr_num();
+  }
 
   auto assm = std::vector<ilang::ExprRef>();
   NvDla::GetInputAssumption(nvdla, assm);

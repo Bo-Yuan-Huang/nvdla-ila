@@ -1,0 +1,3 @@
+[submodule "nvdla"]
+	path = nvdla
+	url = https://github.com/nvdla/hw.git
